@@ -120,7 +120,7 @@ class Model:
         return res.mean()
 
 
-    def evaluate(self, df, target):
+    def evaluate(self, df: pd.DataFrame, target):
         """Apply transformations to df and target and return the f1-score.
         Args:
             df (pd.DataFrame): the dataset.
@@ -139,23 +139,3 @@ class Model:
             target = self.encode_target(target)
 
         return self.test(df, target)
-
-
-def read_data(file_name, sep=','):
-    return pd.read_csv(file_name, sep=sep)
-
-
-if __name__ == '__main__':
-
-    import warnings
-    warnings.filterwarnings("ignore", category=FutureWarning)
-
-    # Read data
-    df = pd.read_csv('../data/mushrooms.csv')
-    target = df.pop('class')
-
-    # Model
-    model = Model()
-    res = model.evaluate(df, target)
-
-    print(res)
