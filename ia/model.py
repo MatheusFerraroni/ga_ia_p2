@@ -72,11 +72,11 @@ class Model:
 
         if len(cat) > 0:
             imputer = SimpleImputer(strategy='most_frequent')
-            df[cat] = imputer.fit_transform(df[cat])
+            df.loc[:,cat] = imputer.fit_transform(df.loc[:,cat])
 
         if len(num) > 0:
             imputer = SimpleImputer(strategy='mean')
-            df.iloc[:,num] = imputer.fit_transform(df.iloc[:,num])
+            df.loc[:,num] = imputer.fit_transform(df.loc[:,num])
 
 
     def encode_categorical(self, df, cat):
@@ -151,7 +151,7 @@ if __name__ == '__main__':
     warnings.filterwarnings("ignore", category=FutureWarning)
 
     # Read data
-    df = pd.read_csv('mushrooms.csv')
+    df = pd.read_csv('../data/mushrooms.csv')
     target = df.pop('class')
 
     # Model

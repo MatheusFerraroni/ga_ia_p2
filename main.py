@@ -3,6 +3,8 @@ import numpy as np
 import matplotlib.pyplot as plt
 import argparse
 
+from ia.model import Model
+
 def get_campos_dataset(path):
     f = open(path[0], "r")
     first_line = f.readline()
@@ -14,15 +16,15 @@ def get_campos_dataset(path):
 
 # para override no GA
 def custom_fitness(genome):
-    return float(sum(genome))/len(genome)
     """
-    
+
     Decode do genome
     Retorno normalizado
 
 
     """
-    pass
+
+    return float(sum(genome))/len(genome)
 
 
 
@@ -32,7 +34,7 @@ def custom_fitness(genome):
 def custom_mutate(index, genome):
     if genome[index]==0:
         genome[index] = 1
-    else: 
+    else:
         genome[index] = 0
     return genome
 
@@ -45,7 +47,6 @@ def custom_mutate2(index, genome):
 def main(args):
 
     campos_dataset = get_campos_dataset(args.dataset)
-
 
     # para override no GA
     def custom_random_genome():
