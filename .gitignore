@@ -6,4 +6,8 @@
 
 results/*.out
 
-*.pyc
+*.pyc.DS_Store
+.DS_Store
+ia/__pycache__/__init__.cpython-37.pyc
+ia/__pycache__/model.cpython-37.pyc
+__pycache__/GA.cpython-37.pyc
