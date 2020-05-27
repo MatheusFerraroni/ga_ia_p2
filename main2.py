@@ -94,8 +94,8 @@ def main():
     g.set_evaluate(custom_fitness)
     g.set_mutate(custom_mutate2)
 
-    g.set_iteration_limit(500)
-    g.set_population_size(50)
+    g.set_iteration_limit(1000)
+    g.set_population_size(100)
     g.set_mutation_rate(0.011)
     g.set_crossover_type(2)
     g.set_cut_half_population(True)

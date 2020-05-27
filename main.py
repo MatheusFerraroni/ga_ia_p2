@@ -4,27 +4,9 @@ import matplotlib.pyplot as plt
 import argparse
 
 from ia.model import Model
-
-def get_campos_dataset(path):
-    f = open(path[0], "r")
-    first_line = f.readline()
-    f.close()
-    first_line = first_line.replace("\n","").split(",")
-    return first_line
+import pandas as pd
 
 
-
-# para override no GA
-def custom_fitness(genome):
-    """
-
-    Decode do genome
-    Retorno normalizado
-
-
-    """
-
-    return float(sum(genome))/len(genome)
 
 
 
@@ -46,12 +28,18 @@ def custom_mutate2(index, genome):
 
 def main(args):
 
-    campos_dataset = get_campos_dataset(args.dataset)
 
-    # para override no GA
+
+    model = Model()
+    df = pd.read_csv(args.dataset[0])
+
+    def custom_fitness(genome):
+        print("oi")
+        return model.evaluate(df, genome)
+
+
     def custom_random_genome():
-        return np.random.randint(low=0,high=2,size=len(campos_dataset),dtype=int)
-
+        return np.random.randint(low=0,high=2,size=len(df.columns),dtype=int)
 
 
     g = GA.GeneticAlgorithm(custom_random_genome)
