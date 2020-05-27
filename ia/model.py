@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 # Python imports
 import os
 
@@ -6,6 +8,7 @@ import numpy as np
 import pandas as pd
 
 # Sklearn
+from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import LabelEncoder, OrdinalEncoder
 from sklearn.model_selection import StratifiedKFold, cross_val_score
 from sklearn.model_selection import train_test_split
@@ -13,41 +16,101 @@ from sklearn.tree import DecisionTreeClassifier
 
 
 class Model:
+    """
+        This class has the goal to preprocess a dataframe, train and test a model, and return the f1 score.
+        Preprocess functions:
+        - get_feature_types
+        - impute
+        - encode_categorical
+        - encode_target
+    """
 
 
-    def get_feature_types(df):
+    def get_feature_types(self, df):
+        """Go through the pandas DataFrame columns, convert to the right dtype, and remove data features.
+        Args:
+            df (pd.DataFrame): the dataset.
+        Returns:
+            df: pandas.DataFrame.
+            categorical_features: list of categorical features.
+            numerical_features: list of numerical features.
+        """
 
-        categorical_features = []
+        cat_features = []
+        num_features = []
         date_features = []
 
-        # Convert to specific types
         for column, dtype in zip(list(df.columns), list(df.dtypes)):
 
             if 'datetime64[ns]' in str(dtype):
                 date_features.append(column)
 
+                df['{0}_day'.format(column)] = df[column].day
+                df['{0}_month'.format(column)] = df[column].month
+                df['{0}_year'.format(column)] = df[column].year
+
             elif dtype not in ['int64', 'float64']:
-                categorical_features.append(column)
+                cat_features.append(column)
                 df[column] = df[column].astype(str)
 
-        df = df.drop(date, axis=1)
+            else:
+                num_features.append(column)
 
-        return df, categorical_features
+        df = df.drop(date_features, axis=1)
+
+        return df, cat_features, num_features
+
+
+    def impute(self, df, cat, num):
+        """Use SimpleImputer to impute missing values.
+        'most_frequent' for categorical and 'mean' for numerical.
+        Args:
+            df (pd.DataFrame): the dataset.
+            cat (list): list of categorical features.
+            num (list): list of numerical features.
+        """
+
+        if len(cat) > 0:
+            imputer = SimpleImputer(strategy='most_frequent')
+            df[cat] = imputer.fit_transform(df[cat])
+
+        if len(num) > 0:
+            imputer = SimpleImputer(strategy='mean')
+            df.iloc[:,num] = imputer.fit_transform(df.iloc[:,num])
 
 
     def encode_categorical(self, df, cat):
+        """Encode categorical features using OrdinalEncoder.
+        Args:
+            df (pd.DataFrame): the dataset.
+            cat (list): list of categorical features.
+        """
 
         encoder = OrdinalEncoder()
         df.loc[:, cat] = encoder.fit_transform(df.loc[:, cat])
 
 
     def encode_target(self, target):
+        """Encode target if it is categorical using LabelEncoder.
+        Args:
+            target (pd.Series): the target series.
+        Returns:
+            target: pandas.Series.
+        """
 
         encoder = LabelEncoder()
-        target = encoder.fit_transform(target)
+        target = pd.Series(encoder.fit_transform(target))
+        return target
 
 
-    def train_and_test_rf(self, df, target):
+    def test(self, df, target):
+        """Train a RandomForest model and get the f1-score.
+        Args:
+            df (pd.DataFrame): the dataset.
+            target (pd.Series): the target series.
+        Returns:
+            float: the f1-score obtained.
+        """
 
         model = DecisionTreeClassifier(random_state=0)
 
@@ -58,29 +121,40 @@ class Model:
 
 
     def evaluate(self, df, target):
+        """Apply transformations to df and target and return the f1-score.
+        Args:
+            df (pd.DataFrame): the dataset.
+            target (pd.Series): the target series.
+        Returns:
+            float: the f1-score obtained.
+        """
 
-        df, cat, date = self.get_feature_types(df)
+        df, cat, num = self.get_feature_types(df)
+
+        self.impute(df, cat, num)
 
         self.encode_categorical(df, cat)
 
         if target.dtype not in ['int64', 'float64']:
-            self.encode_target(target)
+            target = self.encode_target(target)
 
-        return self.train_and_test_rf(df, target)
+        return self.test(df, target)
 
 
 def read_data(file_name, sep=','):
-
     return pd.read_csv(file_name, sep=sep)
 
 
 if __name__ == '__main__':
 
+    import warnings
+    warnings.filterwarnings("ignore", category=FutureWarning)
+
+    # Read data
     df = pd.read_csv('mushrooms.csv')
     target = df.pop('class')
 
-    print('entrou')
-
+    # Model
     model = Model()
     res = model.evaluate(df, target)
 
