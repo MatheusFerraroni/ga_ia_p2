@@ -36,8 +36,10 @@ def custom_mutate(index, genome):
         genome[index] = 0
     return genome
 
+# swap index e index+1
 def custom_mutate2(index, genome):
-    genome[i], genome[i+1] = genome[i+1], genome[i]
+    p = np.random.randint(low=0,high=len(genome),size=1,dtype=int)
+    genome[index], genome[p] = genome[p], genome[index]
     return genome
 
 def main(args):

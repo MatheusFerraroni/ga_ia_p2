@@ -1,4 +1,5 @@
 import numpy as np
+import threading
 
 """
 
@@ -63,8 +64,11 @@ class GeneticAlgorithm:
         self.iteration_counter = 0
         self.stop_criteria_type = 0
         self.probs_type = 0
+        self.use_threads = False
 
         self.cut_half_population = False
+
+        self.replicate_best = 0 # amount of best elements to replicate between generations
         self.set_random_genome(random_genome_func)
         self.create_initial_population()
 
@@ -80,10 +84,8 @@ class GeneticAlgorithm:
 
 
         while self.check_stop():
-            self.calculate_score()
-
-
-            self.population.sort(key=lambda x: x.score, reverse=True) # ordena por score
+            self.calculate_score() # PRIMEIRO: CALCULAR PELO SCORE
+            self.population.sort(key=lambda x: x.score, reverse=True) # SEGUNDO: CALCULAR O SCORE
 
 
 
@@ -118,7 +120,9 @@ class GeneticAlgorithm:
 
         newPop = []
 
-        while len(newPop)<self.population_size:
+        best_replicator = int(self.population_size*self.replicate_best)
+
+        while len(newPop)<self.population_size-best_replicator:
             parents = np.random.choice(self.population,size=2,p=probs) #seleciona parents
 
             new_element = element(self.elements_created, self.iteration_counter, self.crossover(parents[0].genome, parents[1].genome))
@@ -126,6 +130,9 @@ class GeneticAlgorithm:
             new_element.genome = self.active_mutate(new_element.genome)
             newPop.append(new_element)
             self.elements_created += 1
+
+        for i in range(best_replicator):
+            newPop.append(self.population[i])
 
         self.population = newPop
 
@@ -188,6 +195,12 @@ class GeneticAlgorithm:
             s = 0
         return s>=self.max_possible_score
 
+
+    def set_replicate_best(self, e):
+        if e<0 or e>1:
+            raise Exception("Value must be between 0 and 1.")
+        self.replicate_best = e
+
     def set_probs_type(self, e):
         self.probs_type = e
 
@@ -219,6 +232,9 @@ class GeneticAlgorithm:
 
     def set_stop_criteria_type(self, e):
         self.stop_criteria_type = e
+
+    def threads(self, e):
+        self.use_threads = e
 
     # gera uma populacao nova
     # o metodo random_genome precisa ter sido override
@@ -276,9 +292,25 @@ class GeneticAlgorithm:
 
     #chama a funcao que calcula o score para cada elemento da populacao
     def calculate_score(self):
-        for e in self.population:
-            e.score = self.evaluate(e.genome)
+        if self.use_threads:
 
+            threads_running = []
+            for e in self.population:
+                x = threading.Thread(target=self.thread_evaluate, args=(e,))
+                threads_running.append(x)
+
+            for i in range(len(threads_running)):
+                threads_running[i].start()
+            for i in range(len(threads_running)):
+                threads_running[i].join()
+
+        else:
+            for e in self.population:
+                e.score = self.evaluate(e.genome)
+
+
+    def thread_evaluate(self, e):
+        e.score = self.evaluate(e.genome)
 
 
     # a mutacao troca o valor dos bits entre 0 e 1
