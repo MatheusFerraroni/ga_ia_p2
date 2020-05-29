@@ -65,7 +65,7 @@ class GeneticAlgorithm:
         self.stop_criteria_type = 0
         self.probs_type = 0
         self.use_threads = False
-
+        self.crossover_rate = 0.5
         self.cut_half_population = False
 
         self.replicate_best = 0 # amount of best elements to replicate between generations
@@ -81,40 +81,32 @@ class GeneticAlgorithm:
     """
     def run(self):
 
-
-
         while self.check_stop():
-            self.calculate_score() # PRIMEIRO: CALCULAR PELO SCORE
-            self.population.sort(key=lambda x: x.score, reverse=True) # SEGUNDO: CALCULAR O SCORE
-
-
-
-
-            if self.cut_half_population:
-                self.population = self.population[0:len(self.population)//2] # descarta pior metade da populacao
-
-
+            self.calculate_score() # PRIMEIRO: Definir score
+            self.population.sort(key=lambda x: x.score, reverse=True) # SEGUNDO: Ordenar pelo score
 
             if self.best_element_total==None or self.population[0].score > self.best_element_total.score: # salva melhor elemento
                 self.best_element_total = self.population[0]
 
             self.do_log()
 
-
+            if self.cut_half_population: # Desativado por padrão. Pode ser util para ajudar a melhoarar a evolução
+                self.population = self.population[0:len(self.population)//2] # Descarta pior metade da populacao. 
 
             self.new_population()
 
-
             self.iteration_counter +=1
 
-            if self.best_element_total.score >= self.max_possible_score:
-                break
 
         return self.best_element_total
 
 
-    def new_population(self):
+    """
 
+    Cria uma nova população
+
+    """
+    def new_population(self):
 
         probs = self.get_probs()
 
@@ -124,6 +116,9 @@ class GeneticAlgorithm:
 
         while len(newPop)<self.population_size-best_replicator:
             parents = np.random.choice(self.population,size=2,p=probs) #seleciona parents
+
+            if parents[0].score<parents[1].score: # garantirmos que o parents[0] sempre tem o elemento melhor. assim as funcoes de crossover sempre vao receber ele no primeiro parametro
+                parents = parents[::-1] # reverse o array
 
             new_element = element(self.elements_created, self.iteration_counter, self.crossover(parents[0].genome, parents[1].genome))
 
@@ -136,16 +131,32 @@ class GeneticAlgorithm:
 
         self.population = newPop
 
+    """
+
+    Retorna um array com o tamanho de len(self.population) onde cada posição desse array indica a chance de um elemento da população ser selecionado (soma do array deve ser == 1)
+    
+    """
     def get_probs(self):
         if self.probs_type == 0:
             return self.probs_roulette()
         elif self.probs_type == 1:
             return self.probs_equal()
 
+
+    """
+
+    Todos os elementos tem a mesma chance de ser selecionado
+
+    """
     def probs_equal(self):
         return [1/len(self.population)]*len(self.population)
 
 
+    """
+    
+    Elementos com score maior tem mais chance de serem selecionados
+
+    """
     def probs_roulette(self):
         probs = [0]*len(self.population) # gera array de probs para selecionar parents
         for i in range(len(probs)):
@@ -155,10 +166,16 @@ class GeneticAlgorithm:
         if div!=0:
             for i in range(len(probs)):
                 probs[i] /= div
-        else:
-            probs = [1/len(probs)]*len(probs)
+        else: # Se nenhuma solução consegue resolver nada, retorna chance igual para todos os elementos
+            probs = self.probs_equal()
         return probs
 
+
+    """
+    
+    Salva os logs da geracao na variavel self.historic
+
+    """
     def do_log(self):
 
             score_geracao_medio = 0
@@ -172,6 +189,11 @@ class GeneticAlgorithm:
             self.historic.append({"geracao":self.iteration_counter,"max":score_geracao_max,"min":score_geracao_min,"avg":score_geracao_medio,"best":self.best_element_total.score})
 
 
+    """
+
+    Checagem do stop criteria
+
+    """
     def check_stop(self):
         if self.stop_criteria_type==0:
             return self.stop_criteria_double()
@@ -180,15 +202,33 @@ class GeneticAlgorithm:
         elif self.stop_criteria_type==2:
             return self.stop_criteria_score()
 
+
+    """
+
+    Checa por limite de iteracao e max_score
+
+    """
     def stop_criteria_double(self):
         s = self.population[0].score
         if s==None:
             s = 0
         return self.iteration_counter<self.iteration_limit or s>=self.max_possible_score
 
+
+    """
+
+    Checa apenas por limite de iteração
+
+    """
     def stop_criteria_iteration(self):
         return self.iteration_counter<self.iteration_limit
 
+
+    """
+
+    Checa apenas por score máximo
+
+    """
     def stop_criteria_score(self):
         s = self.population[0].score
         if s==None:
@@ -258,7 +298,17 @@ class GeneticAlgorithm:
             return self.crossover_single_point(genA, genB)
         elif self.crossover_type==2:
             return self.crossover_two_point(genA, genB)
+        elif self.crossover_type==3:
+            return self.crossover_rate_selection(genA, genB)
 
+    def crossover_rate_selection(self, genA, genB):
+        new = np.array([],dtype=int)
+        for i in range(len(genA)):
+            if np.random.random()<self.crossover_rate:
+                new = np.append(new, genA[i])
+            else:
+                new = np.append(new, genB[i])
+        return new
 
     # CROSSOVER (Uniform Crossover)
     def crossover_uniform(self, genA, genB):
@@ -292,23 +342,23 @@ class GeneticAlgorithm:
 
     #chama a funcao que calcula o score para cada elemento da populacao
     def calculate_score(self):
-        if self.use_threads:
+        if self.use_threads: # se as threads estão ativas elas são chamadas aqui
 
             threads_running = []
             for e in self.population:
                 x = threading.Thread(target=self.thread_evaluate, args=(e,))
+                x.start()
                 threads_running.append(x)
 
             for i in range(len(threads_running)):
-                threads_running[i].start()
-            for i in range(len(threads_running)):
                 threads_running[i].join()
 
-        else:
+        else: # se não tiver threads os elementos são avaliados sequencialmente
             for e in self.population:
                 e.score = self.evaluate(e.genome)
 
 
+    #funcao que as threads chamam para avaliar o elemento
     def thread_evaluate(self, e):
         e.score = self.evaluate(e.genome)
 

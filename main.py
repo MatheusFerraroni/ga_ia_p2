@@ -6,7 +6,8 @@ import argparse
 from ia.model import Model
 import pandas as pd
 
-targets = {'mushrooms.csv': 'class'}
+targets = {'mushrooms.csv': 'class',
+            'netflix_titles.csv': 'show_id'}
 
 
 
@@ -30,7 +31,7 @@ def custom_mutate2(index, genome):
 def main(args):
 
     df = pd.read_csv(args.dataset[0])
-    target = targets[args.dataset[0].split('/')[2]]
+    target = targets[args.dataset[0].split('/')[-1]]
     target = df.pop(target)
 
     model = Model()
@@ -45,6 +46,8 @@ def main(args):
     g = GA.GeneticAlgorithm(custom_random_genome)
     g.set_evaluate(custom_fitness)
     g.set_mutate(custom_mutate)
+
+    g.set_population_size(10)
 
     g.run()
 

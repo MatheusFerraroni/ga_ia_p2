@@ -94,12 +94,12 @@ def main():
     g.set_evaluate(custom_fitness)
     g.set_mutate(custom_mutate2)
 
-    g.set_iteration_limit(1000)
-    g.set_population_size(100)
+    g.set_iteration_limit(100)
+    g.set_population_size(30)
     g.set_mutation_rate(0.011)
     g.set_crossover_type(2)
     g.set_cut_half_population(True)
-    # g.threads(False) # Não ta funcionando bem isso, a fitness function também devesse ser paralelizada nesse caso
+    # g.threads(False) # Não ta funcionando bem isso, talvez a fitness function também devesse ser paralelizada nesse caso
     g.set_replicate_best(0.05) # se isso estiver ativo o best element total e o melhor da populaçõa serão os mesmos
 
     start = time.time()
