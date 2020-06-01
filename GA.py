@@ -73,6 +73,24 @@ class GeneticAlgorithm:
         self.create_initial_population()
 
 
+    def get_config(self):
+        o = {}
+
+        o["mutation_rate"] = self.mutation_rate
+        o["population_size"] = self.population_size
+        o["iteration_limit"] = self.iteration_limit
+        o["elements_created"] = self.elements_created
+        o["crossover_type"] = self.crossover_type
+        o["max_possible_score"] = self.max_possible_score
+        o["iteration_counter"] = self.iteration_counter
+        o["stop_criteria_type"] = self.stop_criteria_type
+        o["probs_type"] = self.probs_type
+        o["crossover_rate"] = self.crossover_rate
+        o["cut_half_population"] = self.cut_half_population
+        o["replicate_best"] = self.replicate_best
+
+        return o
+
 
     """
     

@@ -2,6 +2,8 @@ import GA
 import numpy as np
 import matplotlib.pyplot as plt
 import argparse
+import json
+from datetime import datetime
 
 from ia.model import Model
 import pandas as pd
@@ -30,8 +32,9 @@ def custom_mutate2(index, genome):
 
 def main(args):
 
+    dataset_name = args.dataset[0].split('/')[-1]
     df = pd.read_csv(args.dataset[0])
-    target = targets[args.dataset[0].split('/')[-1]]
+    target = targets[dataset_name]
     target = df.pop(target)
 
     model = Model()
@@ -49,35 +52,50 @@ def main(args):
 
     g.set_population_size(10)
 
-    g.run()
+    infos = {}
+    infos["dataset_name"] = dataset_name
+    infos["ga_config"] = g.get_config()
+    infos["historic"] = g.historic
+
+
+
+    now = datetime.now()
+
+    current_time = str(now.strftime("%Y %m %d %H-%M-%S"))
+    f = open("./results/"+dataset_name+" "+current_time+".json","w")
+    f.write(json.dumps(infos))
+    f.close()
+
+
+    # g.run()
 
 
 
 
-    geracoes = []
-    maxs = []
-    mins = []
-    meds = []
-    bests = []
-    for i in range(len(g.historic)):
-        geracoes.append(g.historic[i]["geracao"])
-        maxs.append(g.historic[i]["max"])
-        mins.append(g.historic[i]["min"])
-        meds.append(g.historic[i]["avg"])
-        bests.append(g.historic[i]["best"])
+    # geracoes = []
+    # maxs = []
+    # mins = []
+    # meds = []
+    # bests = []
+    # for i in range(len(g.historic)):
+    #     geracoes.append(g.historic[i]["geracao"])
+    #     maxs.append(g.historic[i]["max"])
+    #     mins.append(g.historic[i]["min"])
+    #     meds.append(g.historic[i]["avg"])
+    #     bests.append(g.historic[i]["best"])
 
 
 
-    fig, ax = plt.subplots()
-    line1, = ax.plot(geracoes, maxs, label='Max Score')
-    line2, = ax.plot(geracoes, meds, label='Average Score')
-    line2, = ax.plot(geracoes, mins, label='Min Score')
-    line2, = ax.plot(geracoes, bests, label='Best Score')
+    # fig, ax = plt.subplots()
+    # line1, = ax.plot(geracoes, maxs, label='Max Score')
+    # line2, = ax.plot(geracoes, meds, label='Average Score')
+    # line2, = ax.plot(geracoes, mins, label='Min Score')
+    # line2, = ax.plot(geracoes, bests, label='Best Score')
 
 
 
-    ax.legend()
-    plt.show()
+    # ax.legend()
+    # plt.show()
 
 if __name__ == '__main__':
 
