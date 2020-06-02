@@ -57,7 +57,8 @@ def main(args):
     infos["ga_config"] = g.get_config()
     infos["historic"] = g.historic
 
-
+    print("Historic = ", g.historic)
+    print("Length = ", len(g.historic))
 
     now = datetime.now()
 
@@ -72,18 +73,19 @@ def main(args):
 
 
 
-    # geracoes = []
-    # maxs = []
-    # mins = []
-    # meds = []
-    # bests = []
-    # for i in range(len(g.historic)):
-    #     geracoes.append(g.historic[i]["geracao"])
-    #     maxs.append(g.historic[i]["max"])
-    #     mins.append(g.historic[i]["min"])
-    #     meds.append(g.historic[i]["avg"])
-    #     bests.append(g.historic[i]["best"])
+    geracoes = []
+    maxs = []
+    mins = []
+    meds = []
+    bests = []
+    for i in range(len(g.historic)):
+        geracoes.append(g.historic[i]["geracao"])
+        maxs.append(g.historic[i]["max"])
+        mins.append(g.historic[i]["min"])
+        meds.append(g.historic[i]["avg"])
+        bests.append(g.historic[i]["best"])
 
+    print("Generations = ", geracoes)
 
 
     # fig, ax = plt.subplots()
