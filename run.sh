@@ -1,1 +1,1 @@
-python main.py --dataset="./data/netflix-shows/netflix_titles.csv"
+python main.py --dataset="./data/mushrooms.csv" 
