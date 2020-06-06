@@ -8,8 +8,8 @@ from datetime import datetime
 from ia.model import Model
 import pandas as pd
 
-targets = {'mushrooms.csv': 'class',
-            'netflix_titles.csv': 'show_id'}
+targets = {'mushrooms.csv': 'class', 
+           'netflix_titles.csv': 'show_id'}
 
 
 
@@ -52,6 +52,8 @@ def main(args):
 
     g.set_population_size(10)
 
+    g.run()
+    
     infos = {}
     infos["dataset_name"] = dataset_name
     infos["ga_config"] = g.get_config()
@@ -67,12 +69,7 @@ def main(args):
     f.write(json.dumps(infos))
     f.close()
 
-
-    # g.run()
-
-
-
-
+    
     geracoes = []
     maxs = []
     mins = []

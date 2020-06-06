@@ -4,9 +4,6 @@ import matplotlib.pyplot as plt
 import time
 
 
-
-
-
 # para override no GA
 def custom_fitness(genome):
     g = genome.reshape(9,9)
@@ -101,6 +98,7 @@ def main():
     g.set_cut_half_population(True)
     # g.threads(False) # Não ta funcionando bem isso, talvez a fitness function também devesse ser paralelizada nesse caso
     g.set_replicate_best(0.05) # se isso estiver ativo o best element total e o melhor da populaçõa serão os mesmos
+                                #population_size/replicate_best>1
 
     start = time.time()
     g.run()
