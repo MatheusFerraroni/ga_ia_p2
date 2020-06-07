@@ -1,26 +1,26 @@
 for name in  mushrooms
 do
-for population in 5 10 #50 100
+for population in 10 20 50 
 do
-for iteration_limit in 4 5 #
+for iteration_limit in 10 20 50 
 do
-for stop_criteria in  0 #E(0, 1, 2)
+for stop_criteria in 0 #E(0, 1, 2)
 do
 for probs_type in  0 #E(0, 1)
 do
-for crossover_type in  0 #E(0, 1, 2 , 3)
+for crossover_type in  0 1 #E(0, 1, 2 , 3)
 do
-for crossover_rate in  0.5 # Pr~(0-1)
+for crossover_rate in 0.1 0.5 # Pr~(0-1)
 do
-for mutation_type in  0 #E(0, 1)
+for mutation_type in  0 1 #E(0, 1)
 do
-for mutation_rate in  0 # Pr~(0-1)
+for mutation_rate in  0 0.1 # Pr~(0-1)
 do
 for use_threads in  0  #0=False, 1=True
 do
 for cut_half_pop in  0   #0=False, 1=True
 do
-for replicate_best in  0.1   #Pr~(0-1)
+for replicate_best in  0 0.1   #Pr~(0-1)
 do
  
    python main.py \
