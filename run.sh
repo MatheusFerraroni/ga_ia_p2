@@ -1,1 +1,0 @@
-python main.py --dataset="./data/mushrooms.csv" 

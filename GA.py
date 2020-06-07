@@ -56,7 +56,7 @@ class GeneticAlgorithm:
         self.historic = []
         self.mutation_rate = 0
         self.population_size = 50
-        self.iteration_limit = 100
+        self.iteration_limit = 5
         self.elements_created = 0
         self.crossover_type = 0
         self.best_element_total = None
@@ -306,6 +306,9 @@ class GeneticAlgorithm:
     # atualmente aceita 3 valores
     def set_crossover_type(self, e):
         self.crossover_type = e
+
+    def set_crossover_rate(self, e):
+        self.crossover_rate = e
 
 
     # chama o metodo de crossover que esta sendo utilizado
