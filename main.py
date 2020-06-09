@@ -4,33 +4,23 @@ import matplotlib.pyplot as plt
 import argparse
 import json
 from datetime import datetime
-import time
 
 from ia.model import Model
+from ia import targetpreprocessing
 import pandas as pd
 
-targets = {'mushrooms.csv': 'class', 
-           'netflix_titles.csv': 'show_id'}
+targets = {'mushrooms.csv': 'class',
+           'netflix_titles.csv': 'show_id',
+           'Bulldozer.csv': 'SalePrice',
+           'Porto_Seguro.csv': 'target',
+           'Kobe.csv': 'shot_made_flag',
+           'IBM.csv': 'Attrition'
+           }
 
 
 # para override no GA
 # inverte os valores do genoma
 def custom_mutate(index, genome):
-    if genome[index]==0:
-        genome[index] = 1
-    else:
-        genome[index] = 0
-    return genome
-
-# Mutation seqSwap with generation 
-def custom_mutate1(index, genome):
-    aux = []
-    for i in range(len(genome)):
-        if i <= index:
-            aux.append(genome[i])
-        else:
-            aux.insert(0, genome[i])
-    genome = aux
     if genome[index]==0:
         genome[index] = 1
     else:
@@ -76,7 +66,6 @@ def main(args):
     simTime = str(now.strftime("%Y %m %d %H-%M-%S"))
     print("Simulation: ", name, " time =", simTime)
 
-
     # print("\n\n**** Start **** ")
     # print("Dataset: ", dataset_name)
     # print("Population Size: ", population_size)
@@ -90,10 +79,10 @@ def main(args):
     # print("Use threads: ", use_threads)
     # print("Cut half population: ", cut_half_pop)
     # print("Replicate_best: ", replicate_best)
-    # time.sleep(10) 
- 
+
 
     df = pd.read_csv(args.dataset[0])
+    df = targetpreprocessing.preprocessDataFrame(df, dataset_name)
     target = targets[dataset_name]
     target = df.pop(target)
 
@@ -108,7 +97,7 @@ def main(args):
 
     g = GA.GeneticAlgorithm(custom_random_genome)
     g.set_evaluate(custom_fitness)
-   
+
 
     g.set_population_size(population_size)
     g.set_iteration_limit(iteration_limit)
@@ -124,24 +113,23 @@ def main(args):
     g.threads(use_threads)
     g.set_cut_half_population(cut_half_pop)
     g.set_replicate_best(replicate_best)
-    
+
 
     g.run()
 
-    
     infos = {}
     infos["dataset_name"] = dataset_name
     infos["ga_config"] = g.get_config()
     infos["historic"] = g.historic
 
- 
+
     #
     #f = open("./results/"+dataset_name+" "+current_time+".json","w")
     f = open("./results/"+name+".json","w")
     f.write(json.dumps(infos))
     f.close()
 
-    
+
     # geracoes = []
     # maxs = []
     # mins = []

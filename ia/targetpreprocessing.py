@@ -13,33 +13,31 @@ to preprocess the data before training.
 
 """
 
-
 def preprocessDataFrame(df_raw, dataname):
 
-    if dataname == "Bulldozer":
+    if dataname == "Bulldozer.csv":
         df_raw.SalePrice = np.log(df_raw.SalePrice)
-        return df_raw.SalePrice
+        return df_raw
 
-    if dataname == "Porto Seguro":
-        return df_raw.target
+    if dataname == "Porto_Seguro.csv":
+        return df_raw
 
-    if dataname == "Kobe":
+    if dataname == "Kobe.csv":
         df_raw = df_raw[ df_raw.shot_made_flag.notnull() ]
         return df_raw
 
-    if dataname == "IBM":
+    if dataname == "IBM.csv":
         df_raw.Attrition = (df_raw.Attrition == "Yes").astype(int)
-        return df_raw.Attrition
+        return df_raw
 
-    if dataname == "Zillow":
-        return []
 
+#Won't be used in main.py but keep it in case
 def returnTargetColumnName(dataname):
 
     if dataname == "Bulldozer":
         return "SalePrice"
 
-    if dataname == "Porto Seguro":
+    if dataname == "Porto_Seguro":
         return 'target'
 
     if dataname == "Kobe":
@@ -47,6 +45,3 @@ def returnTargetColumnName(dataname):
 
     if dataname == "IBM":
         return 'Attrition'
-
-    if dataname == "Zillow":
-        return ''
