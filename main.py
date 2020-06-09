@@ -123,7 +123,7 @@ def main(args):
     if mutation_type==0:
     	g.set_mutate(custom_mutate)
     else:
-    	g.set_mutate(custom_mutate2)
+    	g.set_mutate(custom_mutate1)
     g.set_mutation_rate(mutation_rate)
     g.threads(use_threads)
     g.set_cut_half_population(cut_half_pop)
