@@ -45,6 +45,27 @@ def preprocessDataFrame(df_raw, dataname):
         return df_raw
 
 
+def returnMinimumScore(dataname):
+    defaultScore = 0.8
+
+    if dataname == "Porto_Seguro.csv":
+        return 0.97
+
+    if dataname == "Kobe.csv":
+        return defaultScore
+
+    if dataname == "IBM.csv":
+        return 0.84
+
+    if dataname == "airline_customer_satisfaction.csv":
+        return defaultScore
+
+    if dataname == "sky.csv":
+        return defaultScore
+
+    return defaultScore
+
+
 #Won't be used in main.py but keep it in case
 def returnTargetColumnName(dataname):
 

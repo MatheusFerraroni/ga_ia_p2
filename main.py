@@ -102,7 +102,7 @@ def main(args):
     df = targetpreprocessing.preprocessDataFrame(df, dataset_name)
     target = targets[dataset_name]
     target = df.pop(target)
-
+    minimumScore = targetpreprocessing.returnMinimumScore(dataset_name)
     model = Model()
 
     def custom_fitness(genome):
