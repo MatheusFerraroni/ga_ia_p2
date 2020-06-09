@@ -33,6 +33,17 @@ def preprocessDataFrame(df_raw, dataname):
     if dataname == "mushrooms.csv":
         return df_raw
 
+    if dataname == "airline_customer_satisfaction.csv":
+        df_raw.satisfaction = (df_raw.satisfaction == "satisfied").astype(int)
+        df_raw = df_raw.drop(columns=["Unnamed: 0","id","Arrival Delay in Minutes"])
+        return df_raw
+
+    if dataname == "sky.csv":
+        df_raw=df_raw.drop(columns=["objid", 'camcol', 'field', 'objid', 'specobjid', 'fiberid'])
+        labels = {'STAR':1, 'GALAXY':2, 'QSO':3}
+        df_raw.replace({'class':labels}, inplace = True)
+        return df_raw
+
 
 #Won't be used in main.py but keep it in case
 def returnTargetColumnName(dataname):

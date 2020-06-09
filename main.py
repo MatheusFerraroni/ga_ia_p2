@@ -14,7 +14,9 @@ targets = {'mushrooms.csv': 'class',
            'Bulldozer.csv': 'SalePrice',
            'Porto_Seguro.csv': 'target',
            'Kobe.csv': 'shot_made_flag',
-           'IBM.csv': 'Attrition'
+           'IBM.csv': 'Attrition',
+           'sky.csv': 'class',
+           'airline_customer_satisfaction.csv': 'satisfaction'
            }
 
 
@@ -27,7 +29,7 @@ def custom_mutate(index, genome):
         genome[index] = 0
     return genome
 
-# Mutation seqSwap with generation 
+# Mutation seqSwap with generation
 def custom_mutate1(index, genome):
     aux = []
     for i in range(len(genome)):
