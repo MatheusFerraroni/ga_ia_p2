@@ -4,6 +4,7 @@ import matplotlib.pyplot as plt
 import argparse
 import json
 from datetime import datetime
+import time
 
 from ia.model import Model
 import pandas as pd
@@ -15,6 +16,21 @@ targets = {'mushrooms.csv': 'class',
 # para override no GA
 # inverte os valores do genoma
 def custom_mutate(index, genome):
+    if genome[index]==0:
+        genome[index] = 1
+    else:
+        genome[index] = 0
+    return genome
+
+# Mutation seqSwap with generation 
+def custom_mutate1(index, genome):
+    aux = []
+    for i in range(len(genome)):
+        if i <= index:
+            aux.append(genome[i])
+        else:
+            aux.insert(0, genome[i])
+    genome = aux
     if genome[index]==0:
         genome[index] = 1
     else:
@@ -60,6 +76,7 @@ def main(args):
     simTime = str(now.strftime("%Y %m %d %H-%M-%S"))
     print("Simulation: ", name, " time =", simTime)
 
+
     # print("\n\n**** Start **** ")
     # print("Dataset: ", dataset_name)
     # print("Population Size: ", population_size)
@@ -73,6 +90,7 @@ def main(args):
     # print("Use threads: ", use_threads)
     # print("Cut half population: ", cut_half_pop)
     # print("Replicate_best: ", replicate_best)
+    # time.sleep(10) 
  
 
     df = pd.read_csv(args.dataset[0])
@@ -109,6 +127,7 @@ def main(args):
     
 
     g.run()
+
     
     infos = {}
     infos["dataset_name"] = dataset_name
