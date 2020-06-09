@@ -114,6 +114,7 @@ class GeneticAlgorithm:
             self.new_population()
 
             self.iteration_counter +=1
+            print("Generation = ", self.iteration_counter)
 
 
         return self.best_element_total
