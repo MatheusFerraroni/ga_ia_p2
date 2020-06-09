@@ -110,7 +110,9 @@ def main(args):
         return model.evaluate(df.loc[:, bool_genome].copy(), target)
 
     def custom_random_genome():
-        return np.random.randint(low=0,high=2,size=len(df.columns),dtype=int)
+        genomex = np.random.randint(low=0,high=2,size=len(df.columns),dtype=int)
+        #genomex = np.random.randint(low=0,high=2,size=len(df.columns))
+        return genomex
 
     g = GA.GeneticAlgorithm(custom_random_genome)
     g.set_evaluate(custom_fitness)
