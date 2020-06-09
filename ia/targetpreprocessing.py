@@ -30,6 +30,9 @@ def preprocessDataFrame(df_raw, dataname):
         df_raw.Attrition = (df_raw.Attrition == "Yes").astype(int)
         return df_raw
 
+    if dataname == "mushrooms.csv":
+        return df_raw
+
 
 #Won't be used in main.py but keep it in case
 def returnTargetColumnName(dataname):
