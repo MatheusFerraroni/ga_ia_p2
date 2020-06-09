@@ -129,7 +129,7 @@ def main(args):
     g.set_cut_half_population(cut_half_pop)
     g.set_replicate_best(replicate_best)
 
-
+    print("Running!!!")
     g.run()
 
     infos = {}

@@ -100,6 +100,7 @@ class GeneticAlgorithm:
     def run(self):
 
         while self.check_stop():
+            print("Generation = ", self.iteration_counter)
             self.calculate_score() # PRIMEIRO: Definir score
             self.population.sort(key=lambda x: x.score, reverse=True) # SEGUNDO: Ordenar pelo score
 
@@ -114,7 +115,7 @@ class GeneticAlgorithm:
             self.new_population()
 
             self.iteration_counter +=1
-            print("Generation = ", self.iteration_counter)
+
 
 
         return self.best_element_total
