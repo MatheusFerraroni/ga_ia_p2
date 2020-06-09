@@ -27,6 +27,21 @@ def custom_mutate(index, genome):
         genome[index] = 0
     return genome
 
+# Mutation seqSwap with generation 
+def custom_mutate1(index, genome):
+    aux = []
+    for i in range(len(genome)):
+        if i <= index:
+            aux.append(genome[i])
+        else:
+            aux.insert(0, genome[i])
+    genome = aux
+    if genome[index]==0:
+        genome[index] = 1
+    else:
+        genome[index] = 0
+    return genome
+
 # swap index e index+1
 def custom_mutate2(index, genome):
     p = np.random.randint(low=0,high=len(genome),size=1,dtype=int)
@@ -108,7 +123,7 @@ def main(args):
     if mutation_type==0:
     	g.set_mutate(custom_mutate)
     else:
-    	g.set_mutate(custom_mutate2)
+    	g.set_mutate(custom_mutate1)
     g.set_mutation_rate(mutation_rate)
     g.threads(use_threads)
     g.set_cut_half_population(cut_half_pop)
