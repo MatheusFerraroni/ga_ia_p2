@@ -45,7 +45,6 @@ def preprocessDataFrame(df_raw, dataname):
         return df_raw
 
     if dataname == "weatherAUS.csv":
-        df_raw = pd.read_csv(f'/content/weatherAUS.csv', low_memory=False)
         df_raw.drop(['RISK_MM'], axis=1, inplace=True)
         df_raw.RainTomorrow = (df_raw.RainTomorrow != "No").astype(int)
         return df_raw
