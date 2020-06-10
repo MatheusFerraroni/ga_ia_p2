@@ -123,7 +123,7 @@ class GeneticAlgorithm:
 
     """
 
-    Cria uma nova população
+    Cria uma nova populacao
 
     """
     def new_population(self):
