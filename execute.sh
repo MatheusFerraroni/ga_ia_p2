@@ -1,9 +1,9 @@
 #!/bin/bash
 
-for name in Kobe
+for name in airline_customer_satisfaction
 do
 
-for config in 0 1 2 3 4 5 6 7 8 
+for config in 0 #1 2 3 4 5 6 7 8 
 do
 
 population=50
@@ -53,7 +53,7 @@ then
 elif [ $config = '8' ];
 then
     echo "Configuration 8"
-    replicate_best=0.1 
+    replicate_best=0 
 fi
 
 
