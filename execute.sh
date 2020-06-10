@@ -3,7 +3,7 @@
 for name in airline_customer_satisfaction
 do
 
-for config in 0 1 2 3 4 5 6 7 8 
+for config in 0 #1 2 3 4 5 6 7 8 
 do
 
 population=50
@@ -69,7 +69,7 @@ fi
     --mutation_rate="${mutation_rate}" \
     --use_threads="${use_threads}" \
     --cut_half_pop="${cut_half_pop}" \
-    --replicate_best="${replicate_best}" &
+    --replicate_best="${replicate_best}" 
 
 
 
