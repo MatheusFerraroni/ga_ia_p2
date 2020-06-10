@@ -16,7 +16,9 @@ targets = {'mushrooms.csv': 'class',
            'Kobe.csv': 'shot_made_flag',
            'IBM.csv': 'Attrition',
            'sky.csv': 'class',
-           'airline_customer_satisfaction.csv': 'satisfaction'
+           'airline_customer_satisfaction.csv': 'satisfaction',
+           'weatherAUS.csv': 'RainTomorrow',
+           'activity_classification.csv':'Activity'
            }
 
 

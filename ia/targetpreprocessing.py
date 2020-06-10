@@ -44,6 +44,16 @@ def preprocessDataFrame(df_raw, dataname):
         df_raw.replace({'class':labels}, inplace = True)
         return df_raw
 
+    if dataname == "weatherAUS.csv":
+        df_raw = pd.read_csv(f'/content/weatherAUS.csv', low_memory=False)
+        df_raw.drop(['RISK_MM'], axis=1, inplace=True)
+        df_raw.RainTomorrow = (df_raw.RainTomorrow != "No").astype(int)
+        return df_raw
+
+    if dataname == 'activity_classification.csv':
+        labels = {'LAYING':1, 'STANDING':2, 'SITTING':3, 'WALKING':4, 'WALKING_UPSTAIRS':5, 'WALKING_DOWNSTAIRS':6}
+        df_raw.replace({'Activity':labels}, inplace = True)
+        return df_raw
 
 def returnMinimumScore(dataname):
     defaultScore = 0.8
