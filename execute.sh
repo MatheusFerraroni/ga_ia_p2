@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for name in weatherAUS
+for name in activity_classification
 do
 
 for config in 0 1 2 3 4 5 6 7 8 
@@ -69,7 +69,7 @@ fi
     --mutation_rate="${mutation_rate}" \
     --use_threads="${use_threads}" \
     --cut_half_pop="${cut_half_pop}" \
-    --replicate_best="${replicate_best}" 
+    --replicate_best="${replicate_best}" &
 
 
 

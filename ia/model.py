@@ -115,7 +115,7 @@ class Model:
         model = DecisionTreeClassifier(random_state=0)
 
         kf = StratifiedKFold(n_splits=10, shuffle=True, random_state=12345678)
-        res = cross_val_score(model, df, target, cv=kf, scoring='f1')
+        res = cross_val_score(model, df, target, cv=kf, scoring='f1_weighted')
 
         return res.mean()
 
