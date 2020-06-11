@@ -135,6 +135,7 @@ class GeneticAlgorithm:
         best_replicator = int(self.population_size*self.replicate_best)
 
         while len(newPop)<self.population_size-best_replicator:
+            print(probs)
             parents = np.random.choice(self.population,size=2,p=probs) #seleciona parents
 
             if parents[0].score<parents[1].score: # garantirmos que o parents[0] sempre tem o elemento melhor. assim as funcoes de crossover sempre vao receber ele no primeiro parametro
