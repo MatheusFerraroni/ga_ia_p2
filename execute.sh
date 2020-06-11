@@ -1,9 +1,9 @@
 #!/bin/bash
 
-for name in glass #bands flag  cellphone
+for name in glass bands flag  cellphone
 do
 
-for config in 7 7 7 7 #0 #1 2 3 4 5 6 7 8 
+for config in 0 1 2 3 4 5 6 7 8 
 do
 
 population=50
