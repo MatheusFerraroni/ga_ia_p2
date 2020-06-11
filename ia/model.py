@@ -29,7 +29,7 @@ class Model:
         - encode_target
     """
 
-    def make_fair(df_raw, dataset_name):
+    def make_fair(self, df_raw, dataset_name):
         """The dataset needs preprocessing since some columns are too correlated to the target.
         Args:
             df_raw (pd.DataFrame): the dataset.
