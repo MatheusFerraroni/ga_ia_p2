@@ -40,26 +40,24 @@ class Model:
 
         if dataset_name == "Bulldozer.csv":
             df_raw.SalePrice = np.log(df_raw.SalePrice)
-            return df_raw
+
+        if dataset_name == "Kobe.csv":
+            df_raw = df_raw[df_raw.shot_made_flag.notnull()]
 
         if dataset_name == "airline_customer_satisfaction.csv":
             df_raw = df_raw.drop(columns=["Unnamed: 0","id","Arrival Delay in Minutes"])
-            return df_raw
 
         if dataset_name == "sky.csv":
             df_raw=df_raw.drop(columns=["objid", 'camcol', 'field', 'objid', 'specobjid', 'fiberid'])
             labels = {'STAR':1, 'GALAXY':2, 'QSO':3}
             df_raw.replace({'class':labels}, inplace = True)
-            return df_raw
 
         if dataset_name == "weatherAUS.csv":
             df_raw.drop(['RISK_MM'], axis=1, inplace=True)
-            return df_raw
 
         if dataset_name == 'activity_classification.csv':
             labels = {'LAYING':1, 'STANDING':2, 'SITTING':3, 'WALKING':4, 'WALKING_UPSTAIRS':5, 'WALKING_DOWNSTAIRS':6}
             df_raw.replace({'Activity':labels}, inplace = True)
-            return df_raw
 
         return df_raw
 
