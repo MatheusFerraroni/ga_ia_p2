@@ -105,11 +105,14 @@ def main(args):
 
 
     df = pd.read_csv(args.dataset[0])
-    df = targetpreprocessing.preprocessDataFrame(df, dataset_name)
+
+    model = Model()
+    df = model.make_fair(df, dataset_name)
+
     target = targets[dataset_name]
     target = df.pop(target)
-    minimumScore = targetpreprocessing.returnMinimumScore(dataset_name)
-    model = Model()
+
+    minimumScore = 0.9
 
     def custom_fitness(genome):
         bool_genome = list(map(bool, genome))

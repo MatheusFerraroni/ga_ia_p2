@@ -22,11 +22,47 @@ class Model:
     """
         This class has the goal to preprocess a dataframe, train and test a model, and return the f1 score.
         Preprocess functions:
+        - make_fair
         - get_feature_types
         - impute
         - encode_categorical
         - encode_target
     """
+
+    def make_fair(df_raw, dataset_name):
+        """The dataset needs preprocessing since some columns are too correlated to the target.
+        Args:
+            df_raw (pd.DataFrame): the dataset.
+            dataset_name (str): the dataset name.
+        Returns:
+            df_raw: pandas.DataFrame.
+        """
+
+        if dataset_name == "Bulldozer.csv":
+            df_raw.SalePrice = np.log(df_raw.SalePrice)
+            return df_raw
+
+        if dataset_name == "airline_customer_satisfaction.csv":
+            df_raw = df_raw.drop(columns=["Unnamed: 0","id","Arrival Delay in Minutes"])
+            return df_raw
+
+        if dataset_name == "sky.csv":
+            df_raw=df_raw.drop(columns=["objid", 'camcol', 'field', 'objid', 'specobjid', 'fiberid'])
+            labels = {'STAR':1, 'GALAXY':2, 'QSO':3}
+            df_raw.replace({'class':labels}, inplace = True)
+            return df_raw
+
+        if dataset_name == "weatherAUS.csv":
+            df_raw.drop(['RISK_MM'], axis=1, inplace=True)
+            return df_raw
+
+        if dataset_name == 'activity_classification.csv':
+            labels = {'LAYING':1, 'STANDING':2, 'SITTING':3, 'WALKING':4, 'WALKING_UPSTAIRS':5, 'WALKING_DOWNSTAIRS':6}
+            df_raw.replace({'Activity':labels}, inplace = True)
+            return df_raw
+
+        return df_raw
+
 
     def get_feature_types(self, df):
         """Go through the pandas DataFrame columns, convert to the right dtype, and remove data features.
@@ -71,7 +107,7 @@ class Model:
             cat (list): list of categorical features.
             num (list): list of numerical features.
         """
-        
+
         for c in df.columns:
             df.loc[df[c] == '?', [c]] = ''
 
@@ -102,7 +138,7 @@ class Model:
         Returns:
             target: pandas.Series.
         """
-        
+
         target = target.astype(str)
 
         encoder = LabelEncoder()
