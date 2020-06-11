@@ -3,12 +3,12 @@
 for name in bands flag glass cellphone
 do
 
-for config in 0 1 2 3 4 5 6 7 8 
+for config in 0 #1 2 3 4 5 6 7 8 
 do
 
 population=50
 iteration_limit=100
-stop_criteria=0
+stop_criteria=1
 probs_type=0
 crossover_type=3
 crossover_rate=0.8
@@ -33,7 +33,7 @@ then
 elif [ $config = '3' ];
 then
     echo "Configuration 3"
-    stop_criteria=1 
+    stop_criteria=0 
 elif [ $config = '4' ];
 then
     echo "Configuration 4"
