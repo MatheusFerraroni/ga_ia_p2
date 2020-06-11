@@ -6,7 +6,6 @@ import json
 from datetime import datetime
 
 from ia.model import Model
-from ia import targetpreprocessing
 import pandas as pd
 
 targets = {'mushrooms.csv': 'class',
