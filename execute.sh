@@ -1,9 +1,9 @@
 #!/bin/bash
 
-for name in bands flag glass cellphone
+for name in glass #bands flag  cellphone
 do
 
-for config in 0 #1 2 3 4 5 6 7 8 
+for config in 7 7 7 7 #0 #1 2 3 4 5 6 7 8 
 do
 
 population=50
@@ -57,7 +57,7 @@ then
 fi
 
 
-   python3 main.py \
+   python main.py \
     --dataset="./data/${name}.csv" \
     --population="${population}" \
     --iteration_limit="${iteration_limit}" \
@@ -69,7 +69,7 @@ fi
     --mutation_rate="${mutation_rate}" \
     --use_threads="${use_threads}" \
     --cut_half_pop="${cut_half_pop}" \
-    --replicate_best="${replicate_best}" &
+    --replicate_best="${replicate_best}" 
 
 
 
