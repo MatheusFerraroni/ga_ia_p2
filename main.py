@@ -18,7 +18,11 @@ targets = {'mushrooms.csv': 'class',
            'sky.csv': 'class',
            'airline_customer_satisfaction.csv': 'satisfaction',
            'weatherAUS.csv': 'RainTomorrow',
-           'activity_classification.csv':'Activity'
+           'activity_classification.csv':'Activity',
+           'bands.csv': 'band type',
+           'flag.csv': 'region',
+           'glass.csv': 'Type',
+           'cellphone.csv': 'price_range'
            }
 
 

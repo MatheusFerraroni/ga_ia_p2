@@ -10,9 +10,12 @@ import pandas as pd
 # Sklearn
 from sklearn.impute import SimpleImputer
 from sklearn.preprocessing import LabelEncoder, OrdinalEncoder
-from sklearn.model_selection import StratifiedKFold, cross_val_score
+from sklearn.model_selection import StratifiedKFold, KFold, cross_val_score
 from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier
+
+import warnings
+warnings.filterwarnings('ignore')
 
 
 class Model:
@@ -24,7 +27,6 @@ class Model:
         - encode_categorical
         - encode_target
     """
-
 
     def get_feature_types(self, df):
         """Go through the pandas DataFrame columns, convert to the right dtype, and remove data features.
@@ -69,6 +71,9 @@ class Model:
             cat (list): list of categorical features.
             num (list): list of numerical features.
         """
+        
+        for c in df.columns:
+            df.loc[df[c] == '?', [c]] = ''
 
         if len(cat) > 0:
             imputer = SimpleImputer(strategy='most_frequent')
@@ -97,6 +102,8 @@ class Model:
         Returns:
             target: pandas.Series.
         """
+        
+        target = target.astype(str)
 
         encoder = LabelEncoder()
         target = pd.Series(encoder.fit_transform(target))
@@ -114,7 +121,7 @@ class Model:
 
         model = DecisionTreeClassifier(random_state=0)
 
-        kf = StratifiedKFold(n_splits=10, shuffle=True, random_state=12345678)
+        kf = KFold(n_splits=10, shuffle=True, random_state=12345678)
         res = cross_val_score(model, df, target, cv=kf, scoring='f1_weighted')
 
         return res.mean()
