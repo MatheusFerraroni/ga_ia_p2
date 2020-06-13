@@ -4,20 +4,6 @@ import numpy as np
 import json
 import itertools
 
-
-name            = ["glass","IBM","Kobe","mushrooms","airline_customer_satisfaction","bands","cellphone","flag"]
-population      = ["10", "50"]      #b
-iteration_limit = ["100", "200"]    #c
-stop_criteria   = ["0","1"]             #d
-probs_type      = ["0"]             #e
-crossover_type  = ["2", "3"]             #f
-crossover_rate  = ["0.5","0.8"]           #g
-mutation_type   = ["0", "1"]             #h
-mutation_rate   = ["0.03", "0.15"]           #i
-use_threads     = ["False"]         #j 
-cut_half_pop    = ["False"]         #k
-replicate_best  = ["0.0", "0.1"]           #l
-
 def openFile(nameFile):
 	try:
 		f = open(nameFile + ".json", "r")
@@ -28,7 +14,6 @@ def openFile(nameFile):
 		pass
 
 	return dados
-
 
 def bestConfig(y_best):
 	maximo = 0
@@ -280,72 +265,88 @@ def nome(a):
 	else:
 		return a
 
-for a in name:
+if __name__ == '__main__':
 
-	name1 = a + ".csv"
-	indice = 0
-	maximo = 0
+	name            = ["glass","IBM","Kobe","mushrooms","airline_customer_satisfaction","bands","cellphone","flag"]
+	population      = ["10", "50"]
+	iteration_limit = ["100", "200"]
+	stop_criteria   = ["0","1"]
+	probs_type      = ["0"]
+	crossover_type  = ["2", "3"]
+	crossover_rate  = ["0.5","0.8"]
+	mutation_type   = ["0", "1"]
+	mutation_rate   = ["0.03", "0.15"]
+	use_threads     = ["False"]
+	cut_half_pop    = ["False"]
+	replicate_best  = ["0.0", "0.1"]
 
-	y_gene = []
-	y_maxs = []
-	y_mins = []
-	y_meds = []
-	y_best = []
-	y_y_std = []
-	teste = []
+	for a in name:
 
-	for b, c, d, e, f, g, h, i, j, k, l in itertools.product(population, iteration_limit, \
-		stop_criteria, probs_type, crossover_type, crossover_rate, mutation_type, mutation_rate, \
-		use_threads, cut_half_pop, replicate_best):							
+		name1 = a + ".csv"
+		indice = 0
+		maximo = 0
 
-		nameFile = name1+"_"+b+"_"+c+"_"+d+"_"+e+"_"+f+"_"+g+"_"+h+"_"+i+"_"+j+"_"+k+"_"+l		
+		y_gene = []
+		y_maxs = []
+		y_mins = []
+		y_meds = []
+		y_best = []
+		y_y_std = []
+		teste = []
 
-		test = b+"_"+c+"_"+d+"_"+e+"_"+f+"_"+g+"_"+h+"_"+i+"_"+j+"_"+k+"_"+l				
+		for b, c, d, e, f, g, h, i, j, k, l in itertools.product(population, iteration_limit, \
+			stop_criteria, probs_type, crossover_type, crossover_rate, mutation_type, mutation_rate, \
+			use_threads, cut_half_pop, replicate_best):							
 
-		dados = openFile("../results/"+nameFile)
-		
-		if dados != 0:
+			nameFile = name1+"_"+b+"_"+c+"_"+d+"_"+e+"_"+f+"_"+g+"_"+h+"_"+i+"_"+j+"_"+k+"_"+l		
 
-			print("File: ", nameFile)
-			teste.append(test)
+			test = b+"_"+c+"_"+d+"_"+e+"_"+f+"_"+g+"_"+h+"_"+i+"_"+j+"_"+k+"_"+l				
 
-			gene = []
-			maxs = []
-			mins = []
-			meds = []
-			best = []
-			y_std = []
-
-			part = dados.get("historic")
+			dados = openFile("../results/"+nameFile)
 			
-			for i in range(len(part)):
-			    gene.append(int(part[i]["geracao"]))
-			    maxs.append(float(part[i]["max"]))
-			    if float(part[i]["max"]) > maximo:
-			    	maximo = float(part[i]["max"])			    	
-			    mins.append(float(part[i]["min"]))
-			    meds.append(float(part[i]["avg"]))
-			    best.append(float(part[i]["best"]))
-			    y_std.append(0)					
-						
-			y_gene.append(gene)
-			y_maxs.append(maxs)
-			y_mins.append(mins)
-			y_meds.append(meds)
-			y_best.append(best)
-			y_y_std.append(y_std)
+			if dados != 0:
+
+				print("File: ", nameFile)
+				teste.append(test)
+
+				gene = []
+				maxs = []
+				mins = []
+				meds = []
+				best = []
+				y_std = []
+
+				part = dados.get("historic")
 				
-	
-	colors = ['m','c','pink','r','b','g','y','orange','k','green']	
-	formats = ['solid', 'solid','solid','solid','solid','solid','solid','solid','solid','solid']	
-	labels = ['C0','C1','C2','C3','C4','C5','C6','C7','C8','C9']
-	
-	best1 = plotBest(y_gene,y_best)
+				for i in range(len(part)):
+				    gene.append(int(part[i]["geracao"]))
+				    maxs.append(float(part[i]["max"]))
+				    if float(part[i]["max"]) > maximo:
+				    	maximo = float(part[i]["max"])			    	
+				    mins.append(float(part[i]["min"]))
+				    meds.append(float(part[i]["avg"]))
+				    best.append(float(part[i]["best"]))
+				    y_std.append(0)					
+							
+				y_gene.append(gene)
+				y_maxs.append(maxs)
+				y_mins.append(mins)
+				y_meds.append(meds)
+				y_best.append(best)
+				print(len(y_best))
+				y_y_std.append(y_std)
+					
+		
+		colors = ['m','c','pink','r','b','g','y','orange','k','green']	
+		formats = ['solid', 'solid','solid','solid','solid','solid','solid','solid','solid','solid']	
+		labels = ['C0','C1','C2','C3','C4','C5','C6','C7','C8','C9']
+		
+		best1 = plotBest(y_gene,y_best)
 
-	min1 = plotMin(y_gene,y_mins)
+		min1 = plotMin(y_gene,y_mins)
 
-	max1 = plotMax(y_gene,y_maxs)
+		max1 = plotMax(y_gene,y_maxs)
 
-	average1 = plotAvg(y_gene,y_meds)
+		average1 = plotAvg(y_gene,y_meds)
 
-	indiv1 = plotIndividual(y_gene,y_maxs,y_mins,y_meds,y_best)	
+		indiv1 = plotIndividual(y_gene,y_maxs,y_mins,y_meds,y_best)	
