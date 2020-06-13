@@ -302,11 +302,11 @@ for a in name:
 
 		test = b+"_"+c+"_"+d+"_"+e+"_"+f+"_"+g+"_"+h+"_"+i+"_"+j+"_"+k+"_"+l				
 
-		dados = openFile(nameFile)
+		dados = openFile("../results/"+nameFile)
 		
 		if dados != 0:
 
-			#print("File: ", nameFile)
+			print("File: ", nameFile)
 			teste.append(test)
 
 			gene = []
