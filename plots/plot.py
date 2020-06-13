@@ -15,24 +15,36 @@ def openFile(nameFile):
 
 	return dados
 
-def bestConfig(y_best):
+def bestConfig(vector):
 	maximo = 0
-	for i in range(len(y_best)):
-		for j in range(len(y_best[i])):
-			if y_best[i][j] > maximo:
-				maximo = y_best[i][j]
+	for i in range(len(vector)):
+		for j in range(len(vector[i])):
+			if vector[i][j] > maximo:
+				maximo = vector[i][j]
 				indice = i
 	
 	return maximo,indice
+
+def minConfig(vector):
+	minimo = vector[0][0]
+	indice = 0
+	for i in range(len(vector)):
+		for j in range(len(vector[i])):
+			if vector[i][j] < minimo:
+				minimo = vector[i][j]
+				indice = i
+	
+	return minimo,indice
 
 def plotBest(y_gene,y_best):
 	
 	fig = plt.figure(1)
 	
 	maximo,indice = bestConfig(y_best)
+	minimo,indiceM = minConfig(y_best)
 
 	yMax = maximo + maximo * 0.02
-	yMim = maximo * -0.02	
+	yMim = minimo - 0.02	# mudar o limite inferior (trocar o valor -0.02)
 	plt.ylim(yMim, yMax)	
 	
 	xMax = len(y_gene[0]) + len(y_gene[0])*0.02
@@ -68,9 +80,10 @@ def plotMin(y_gene,y_mins):
 	fig = plt.figure(2)
 
 	maximo,indice = bestConfig(y_mins)
+	minimo,indiceM = minConfig(y_mins)
 
 	yMax = maximo + maximo * 0.02
-	yMim = maximo * -0.02
+	yMim = minimo - 0.02	# mudar o limite inferior (trocar o valor -0.02)
 	plt.ylim(yMim, yMax)
 
 	xMax = len(y_gene[0]) + len(y_gene[0])*0.02
@@ -105,9 +118,10 @@ def plotMax(y_gene,y_maxs):
 	fig = plt.figure(3)
 
 	maximo,indice = bestConfig(y_maxs)
+	minimo,indiceM = minConfig(y_maxs)
 
 	yMax = maximo + maximo * 0.02
-	yMim = maximo * -0.02
+	yMim = minimo - 0.02	# mudar o limite inferior (trocar o valor -0.02)
 	plt.ylim(yMim, yMax)
 
 	xMax = len(y_gene[0]) + len(y_gene[0])*0.02
@@ -141,9 +155,10 @@ def plotAvg(y_gene,y_meds):
 	fig = plt.figure(4)
 
 	maximo,indice = bestConfig(y_meds)
-
+	minimo,indiceM = minConfig(y_meds)
+	
 	yMax = maximo + maximo * 0.02
-	yMim = maximo * -0.02
+	yMim = minimo - 0.02	# mudar o limite inferior (trocar o valor -0.02)
 	plt.ylim(yMim, yMax)
 
 	xMax = len(y_gene[0]) + len(y_gene[0])*0.02
@@ -178,9 +193,10 @@ def plotIndividual(y_gene,y_maxs,y_mins,y_meds,y_best):
 	fig = plt.figure(5)
 
 	maximo,indice = bestConfig(y_maxs)
-
+	minimo,indiceM = minConfig(y_mins)
+	
 	yMax = maximo + maximo * 0.02
-	yMim = maximo * -0.02
+	yMim = minimo - 0.02	# mudar o limite inferior (trocar o valor -0.02)
 	plt.ylim(yMim, yMax)
 
 	bestt,indice = bestConfig(y_best)
@@ -216,9 +232,10 @@ def plotIndMult(y_gene,y_maxs,y_mins,y_meds,y_best):
 	fig = plt.figure(6)
 
 	maximo,indice = bestConfig(y_maxs)
-
+	minimo,indiceM = minConfig(y_mins)
+	
 	yMax = maximo + maximo * 0.02
-	yMim = maximo * -0.02
+	yMim = minimo - 0.02	# mudar o limite inferior (trocar o valor -0.02)	
 	plt.ylim(yMim, yMax)
 
 	xMax = len(y_gene[0]) + len(y_gene[0])*0.02
@@ -332,8 +349,7 @@ if __name__ == '__main__':
 				y_maxs.append(maxs)
 				y_mins.append(mins)
 				y_meds.append(meds)
-				y_best.append(best)
-				print(len(y_best))
+				y_best.append(best)				
 				y_y_std.append(y_std)
 					
 		
