@@ -47,7 +47,7 @@ def plotBest(y_gene,y_best,maximo,minimo):
 	
 	fig = plt.figure(1)
 
-	if maximo != 0:
+	if maximo != 0:		
 		plt.ylim(minimo,maximo)
 	else:
 		maximo,indice = bestConfig(y_best)
@@ -63,8 +63,11 @@ def plotBest(y_gene,y_best,maximo,minimo):
 
 	plt.grid(True, which="both", ls="-", linewidth=0.1, color='0.10', zorder=0)    												
 			
-	for n in range(len(y_best)):		
-		plt.errorbar(y_gene[n],y_best[n], ls=formats[n], label=labels[n],color=colors[n],yerr=y_y_std[n], zorder=3)
+	for n in range(len(y_best)):
+		if a == "airline_customer_satisfaction":
+			plt.errorbar(y_gene[n],y_best[n], ls=formats[n], label=labelAirline[n],color=colors[n],yerr=y_y_std[n], zorder=3)
+		else:
+			plt.errorbar(y_gene[n],y_best[n], ls=formats[n], label=labels[n],color=colors[n],yerr=y_y_std[n], zorder=3)
 		
 	namePlot = a + "_bestIndividuals"
 	ylabel = 'Fitness'
@@ -95,7 +98,10 @@ def plotMin(y_gene,y_mins,maximo,minimo):
 	
 	plt.grid(True, which="both", ls="-", linewidth=0.1, color='0.10', zorder=0)
 	for n in range(len(y_mins)):
-		plt.errorbar(y_gene[n],y_mins[n], ls=formats[n], label=labels[n],color=colors[n],yerr=y_y_std[n], zorder=3)
+		if a == "airline_customer_satisfaction":
+			plt.errorbar(y_gene[n],y_mins[n], ls=formats[n], label=labelAirline[n],color=colors[n],yerr=y_y_std[n], zorder=3)
+		else:
+			plt.errorbar(y_gene[n],y_mins[n], ls=formats[n], label=labels[n],color=colors[n],yerr=y_y_std[n], zorder=3)
 		
 	namePlot = a + "_mins"
 	ylabel = 'Fitness'
@@ -115,19 +121,18 @@ def plotMin(y_gene,y_mins,maximo,minimo):
 	
 	return True
 
-def plotMax(y_gene,y_maxs,maximo,minimo):
+def plotMax(y_gene,y_maxs,maximo,minimo,teste):
 
 	fig = plt.figure(3)
 
-	if maximo != 0:
-		plt.ylim(minimo,maximo)
+	if maximo != 0:		
+		plt.ylim(minimo,maximo)		
 	else:
 		maximo,indice = bestConfig(y_maxs)
 		minimo,indiceM = minConfig(y_maxs)
 		maximo = maximo + maximo * 0.02
 		minimo = minimo + minimo * -0.02
-	
-	plt.ylim(minimo, maximo)
+		plt.ylim(minimo, maximo)
 
 	xMax = len(y_gene[0]) + len(y_gene[0])*0.02
 	xMim =  len(y_gene[0])*-0.02
@@ -135,8 +140,10 @@ def plotMax(y_gene,y_maxs,maximo,minimo):
 	
 	plt.grid(True, which="both", ls="-", linewidth=0.1, color='0.10', zorder=0)
 	for n in range(len(y_maxs)):
-		plt.errorbar(y_gene[n],y_maxs[n], ls=formats[n], label=labels[n],color=colors[n],yerr=y_y_std[n], zorder=3)
-		
+		if a == "airline_customer_satisfaction":
+			plt.errorbar(y_gene[n],y_maxs[n], ls=formats[n], label=labelAirline[n],color=colors[n],yerr=y_y_std[n], zorder=3)
+		else:
+			plt.errorbar(y_gene[n],y_maxs[n], ls=formats[n], label=labels[n],color=colors[n],yerr=y_y_std[n], zorder=3)
 	namePlot = a + "_max"
 	ylabel = 'Fitness'
 	xlabel = 'Number of generations'
@@ -175,7 +182,10 @@ def plotAvg(y_gene,y_meds,maximo,minimo):
 	
 	plt.grid(True, which="both", ls="-", linewidth=0.1, color='0.10', zorder=0)
 	for n in range(len(y_meds)):
-		plt.errorbar(y_gene[n],y_meds[n], ls=formats[n], label=labels[n],color=colors[n],yerr=y_y_std[n], zorder=3)
+		if a == "airline_customer_satisfaction":
+			plt.errorbar(y_gene[n],y_meds[n], ls=formats[n], label=labelAirline[n],color=colors[n],yerr=y_y_std[n], zorder=3)
+		else:
+			plt.errorbar(y_gene[n],y_meds[n], ls=formats[n], label=labels[n],color=colors[n],yerr=y_y_std[n], zorder=3)
 		
 	namePlot = a + "_avg"
 	ylabel = 'Fitness'
@@ -201,8 +211,14 @@ def plotIndividual(y_gene,y_maxs,y_mins,y_meds,y_best,teste):
 	fig = plt.figure(5)
 
 	maximo,indice = bestConfig(y_maxs)
-	minimo,indiceM = minConfig(y_mins)
+	minimo,indiceMinimo = minConfig(y_mins)		
 	print("O grafico do individuo " + a + " plotado é:" + teste[indice])
+	print(indice)
+	if a == "airline_customer_satisfaction":
+		configurationName = configurationAirline(indice)				
+	else:
+		configurationName = configuration(indice)
+	print(configurationName)
 
 	yMax = maximo + maximo * 0.02
 	yMim = minimo - 0.02	# mudar o limite inferior (trocar o valor -0.02)
@@ -212,6 +228,10 @@ def plotIndividual(y_gene,y_maxs,y_mins,y_meds,y_best,teste):
 	xMax = len(y_gene[indice]) + len(y_gene[indice])*0.02
 	xMim =  len(y_gene[indice])*-0.02
 	plt.xlim(xMim, xMax)
+
+	mini = min(y_mins[indice])
+	maxi = max(y_maxs[indice])
+	print("mini:",mini,"max",maxi)
 		
 	plt.grid(True, which="both", ls="-", linewidth=0.1,color='0.10', zorder=0)
 	plt.errorbar(y_gene[indice],y_maxs[indice], ls=formats[indice], label='maximum', color='blue',yerr=y_y_std[indice], zorder=3)	
@@ -222,7 +242,7 @@ def plotIndividual(y_gene,y_maxs,y_mins,y_meds,y_best,teste):
 	ylabel = 'Fitness'
 	xlabel = 'Number of generations'
 	titulo = nome(a)
-	title = titulo + " - Best Individual"
+	title = titulo + " - Configuration" + " ("+ configurationName+ ")"
 
 
 	plt.ylabel(ylabel, fontweight="bold")
@@ -235,6 +255,46 @@ def plotIndividual(y_gene,y_maxs,y_mins,y_meds,y_best,teste):
 	plt.close(fig)
 
 	return True
+
+def configuration(indice):
+
+	if indice == 0:
+		return "C0"
+	elif indice == 1:
+		return "C1"
+	elif indice == 2:
+		return "C2"
+	elif indice == 3:
+		return "C3"
+	elif indice == 4:
+		return "C4"
+	elif indice == 5:
+		return "C5"
+	elif indice == 6:
+		return "C6"
+	elif indice == 7:
+		return "C7"
+	elif indice == 8:
+		return "C8"
+
+def configurationAirline(indice):
+
+	if indice == 0:
+		return "C0"
+	elif indice == 1:
+		return "C1"
+	elif indice == 2:
+		return "C3"
+	elif indice == 3:
+		return "C4"
+	elif indice == 4:
+		return "C5"
+	elif indice == 5:
+		return "C6"
+	elif indice == 6:
+		return "C7"
+	elif indice == 7:
+		return "C8"
 
 def plotIndMult(y_gene,y_maxs,y_mins,y_meds,y_best):
 
@@ -384,6 +444,7 @@ if __name__ == '__main__':
 		colors = ['m','c','pink','r','b','g','y','k','orange','green']	
 		formats = ['solid', 'solid','solid','solid','solid','solid','solid','solid','solid','solid']	
 		labels = ['C0','C1','C2','C3','C4','C5','C6','C7','C8','C9']
+		labelAirline = ['C0','C1','C3','C4','C5','C6','C7','C8','C9']
 
 		if mesmoYLim == True:
 			maximo,minimo = limites(y_best,y_meds)
@@ -397,7 +458,7 @@ if __name__ == '__main__':
 
 		#min1 = plotMin(y_gene,y_mins,maximo,minimo)
 
-		max1 = plotMax(y_gene,y_maxs,maximo,minimo)
+		max1 = plotMax(y_gene,y_maxs,maximo,minimo,teste)
 
 		average1 = plotAvg(y_gene,y_meds,maximo,minimo)
 
