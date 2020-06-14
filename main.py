@@ -140,6 +140,7 @@ def main(args):
     g.set_replicate_best(replicate_best)
 
     print("Running!!!")
+    g.set_iteration_limit(5)
     g.run()
 
     infos = {}
@@ -150,9 +151,10 @@ def main(args):
 
     #
     #f = open("./results/"+dataset_name+" "+current_time+".json","w")
-    f = open("./results/"+name+".json","w")
-    f.write(json.dumps(infos))
-    f.close()
+    print(json.dumps(infos))
+    # f = open("./results/"+name+".json","w")
+    # f.write(json.dumps(infos))
+    # f.close()
 
 
     # geracoes = []
