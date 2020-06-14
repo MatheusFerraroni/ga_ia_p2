@@ -108,6 +108,7 @@ class GeneticAlgorithm:
                 self.best_element_total = self.population[0]
 
             self.do_log()
+            print(self.historic)
 
             if self.cut_half_population: # Desativado por padrão. Pode ser util para ajudar a melhoarar a evolução
                 self.population = self.population[0:len(self.population)//2] # Descarta pior metade da populacao. 
@@ -207,7 +208,7 @@ class GeneticAlgorithm:
                 score_geracao_min = min(score_geracao_min, self.population[i].score)
                 score_geracao_max = max(score_geracao_max, self.population[i].score)
             score_geracao_medio /= len(self.population)
-            self.historic.append({"geracao":self.iteration_counter,"max":score_geracao_max,"min":score_geracao_min,"avg":score_geracao_medio,"best":self.best_element_total.score})
+            self.historic.append({"geracao":self.iteration_counter,"max":score_geracao_max,"min":score_geracao_min,"avg":score_geracao_medio,"best":self.best_element_total.score,"best_genome":self.best_element_total.genome.tolist()})
 
 
     """
