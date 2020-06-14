@@ -36,8 +36,7 @@ def custom_mutate(index, genome):
 
 # Mutation seqSwap with generation
 def custom_mutate1(index, genome):
-    #aux = []
-    aux = np.array([])
+    aux = []
     for i in range(len(genome)):
         if i <= index:
             aux.append(genome[i])
@@ -48,7 +47,7 @@ def custom_mutate1(index, genome):
         genome[index] = 1
     else:
         genome[index] = 0
-    return genome
+    return np.array(genome)
 
 # swap index e index+1
 def custom_mutate2(index, genome):
@@ -141,7 +140,6 @@ def main(args):
     g.set_replicate_best(replicate_best)
 
     print("Running!!!")
-    g.set_iteration_limit(5)
     g.run()
 
     infos = {}
@@ -152,10 +150,9 @@ def main(args):
 
     #
     #f = open("./results/"+dataset_name+" "+current_time+".json","w")
-    print(json.dumps(infos))
-    # f = open("./results/"+name+".json","w")
-    # f.write(json.dumps(infos))
-    # f.close()
+    f = open("./results/"+name+".json","w")
+    f.write(json.dumps(infos))
+    f.close()
 
 
     # geracoes = []

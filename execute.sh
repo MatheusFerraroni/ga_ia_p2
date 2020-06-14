@@ -1,16 +1,16 @@
 #!/bin/bash
 
-for name in IBM
+for name in IBM bands flag glass #cellphone
 do
 
 sleep 2
 
-for config in 0
+for config in 0 1 2 3 4 5 6 7 8 9
 do
 
 sleep 1
 
-population=10
+population=50
 iteration_limit=100
 stop_criteria=1
 probs_type=0
@@ -65,7 +65,7 @@ then
 fi
 
 
-   python main.py \
+   python3 main.py \
     --dataset="./data/${name}.csv" \
     --population="${population}" \
     --iteration_limit="${iteration_limit}" \
