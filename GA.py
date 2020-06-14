@@ -209,11 +209,20 @@ class GeneticAlgorithm:
                 score_geracao_max = max(score_geracao_max, self.population[i].score)
             score_geracao_medio /= len(self.population)
 
-           todos_genomes = []
+            todos_genomes = []
             for i in range(len(self.population)):
                 todos_genomes.append(self.population[i].genome.tolist())
 
-            self.historic.append({"geracao":self.iteration_counter,"max":score_geracao_max,"min":score_geracao_min,"avg":score_geracao_medio,"best":self.best_element_total.score,"best_genome":self.best_element_total.genome.tolist(),"todos_genomes":todos_genomes})toric.append({"geracao":self.iteration_counter,"max":score_geracao_max,"min":score_geracao_min,"avg":score_geracao_medio,"best":self.best_element_total.score,"best_genome":self.best_element_total.genome.tolist(),"todos_genomes":todos_genomes})
+            self.historic.append({"geracao":self.iteration_counter,
+                "max":score_geracao_max,
+                "min":score_geracao_min,
+                "avg":score_geracao_medio,
+                "best":self.best_element_total.score,
+                "best_genome":self.best_element_total.genome.tolist(),
+                "todos_genomes":todos_genomes})
+               
+
+
 
 
     """
