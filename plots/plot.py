@@ -16,7 +16,9 @@ def openFile(nameFile):
 	return dados
 
 def bestConfig(vector):
-	maximo = 0
+	maximo = vector[0][0]
+	indice = 0
+
 	for i in range(len(vector)):
 		for j in range(len(vector[i])):
 			if vector[i][j] > maximo:
@@ -36,16 +38,22 @@ def minConfig(vector):
 	
 	return minimo,indice
 
-def plotBest(y_gene,y_best):
+def limites(y_best,y_meds):
+	maximo,indice = bestConfig(y_best)
+	minimo,indiceM = minConfig(y_meds)
+	return maximo,minimo
+
+def plotBest(y_gene,y_best,maximo,minimo):
 	
 	fig = plt.figure(1)
-	
-	maximo,indice = bestConfig(y_best)
-	minimo,indiceM = minConfig(y_best)
 
-	yMax = maximo + maximo * 0.02
-	yMim = minimo - 0.02	# mudar o limite inferior (trocar o valor -0.02)
-	plt.ylim(yMim, yMax)	
+	if maximo != 0:
+		plt.ylim(minimo,maximo)
+	else:
+		maximo,indice = bestConfig(y_best)
+		minimo,indiceM = minConfig(y_best)
+		maximo = maximo + maximo * 0.02
+		minimo = minimo + minimo * -0.02
 	
 	xMax = len(y_gene[0]) + len(y_gene[0])*0.02
 	xMim =  len(y_gene[0])*-0.02
@@ -75,16 +83,10 @@ def plotBest(y_gene,y_best):
 
 	return True			
 
-def plotMin(y_gene,y_mins):
+def plotMin(y_gene,y_mins,maximo,minimo):
 	
-	fig = plt.figure(2)
-
-	maximo,indice = bestConfig(y_mins)
-	minimo,indiceM = minConfig(y_mins)
-
-	yMax = maximo + maximo * 0.02
-	yMim = minimo - 0.02	# mudar o limite inferior (trocar o valor -0.02)
-	plt.ylim(yMim, yMax)
+	fig = plt.figure(2)		
+	plt.ylim(minimo, maximo)
 
 	xMax = len(y_gene[0]) + len(y_gene[0])*0.02
 	xMim =  len(y_gene[0])*-0.02
@@ -106,23 +108,26 @@ def plotMin(y_gene,y_mins):
 	plt.xlabel(xlabel, fontweight="bold") 	
 	plt.title(title, fontweight="bold")
 
-	plt.legend(numpoints=1, loc="lower left", ncol=3)	# ,bbox_to_anchor=(-0.02, 1.15)
+	plt.legend(numpoints=1, loc="lower right", ncol=3)	# ,bbox_to_anchor=(-0.02, 1.15)
 
 	fig.savefig(namePlot+'.png', bbox_inches='tight')
 	plt.close(fig) 			
 	
 	return True
 
-def plotMax(y_gene,y_maxs):
+def plotMax(y_gene,y_maxs,maximo,minimo):
 
 	fig = plt.figure(3)
 
-	maximo,indice = bestConfig(y_maxs)
-	minimo,indiceM = minConfig(y_maxs)
-
-	yMax = maximo + maximo * 0.02
-	yMim = minimo - 0.02	# mudar o limite inferior (trocar o valor -0.02)
-	plt.ylim(yMim, yMax)
+	if maximo != 0:
+		plt.ylim(minimo,maximo)
+	else:
+		maximo,indice = bestConfig(y_maxs)
+		minimo,indiceM = minConfig(y_maxs)
+		maximo = maximo + maximo * 0.02
+		minimo = minimo + minimo * -0.02
+	
+	plt.ylim(minimo, maximo)
 
 	xMax = len(y_gene[0]) + len(y_gene[0])*0.02
 	xMim =  len(y_gene[0])*-0.02
@@ -143,23 +148,26 @@ def plotMax(y_gene,y_maxs):
 	plt.xlabel(xlabel, fontweight="bold") 	
 	plt.title(title, fontweight="bold")
 
-	plt.legend(numpoints=1, loc="lower left", ncol=3)	# ,bbox_to_anchor=(-0.02, 1.15)
+	plt.legend(numpoints=1, loc="lower right", ncol=3)	# ,bbox_to_anchor=(-0.02, 1.15)
 
 	fig.savefig(namePlot+'.png', bbox_inches='tight')
 	plt.close(fig) 
 
 	return True	
 
-def plotAvg(y_gene,y_meds):
+def plotAvg(y_gene,y_meds,maximo,minimo):
 
 	fig = plt.figure(4)
 
-	maximo,indice = bestConfig(y_meds)
-	minimo,indiceM = minConfig(y_meds)
+	if maximo != 0:
+		plt.ylim(minimo,maximo)
+	else:
+		maximo,indice = bestConfig(y_meds)
+		minimo,indiceM = minConfig(y_meds)
+		maximo = maximo + maximo * 0.02
+		minimo = minimo + minimo * -0.02
 	
-	yMax = maximo + maximo * 0.02
-	yMim = minimo - 0.02	# mudar o limite inferior (trocar o valor -0.02)
-	plt.ylim(yMim, yMax)
+	plt.ylim(minimo, maximo)
 
 	xMax = len(y_gene[0]) + len(y_gene[0])*0.02
 	xMim =  len(y_gene[0])*-0.02
@@ -188,13 +196,14 @@ def plotAvg(y_gene,y_meds):
 	return True
 
 
-def plotIndividual(y_gene,y_maxs,y_mins,y_meds,y_best):
+def plotIndividual(y_gene,y_maxs,y_mins,y_meds,y_best,teste):
 
 	fig = plt.figure(5)
 
 	maximo,indice = bestConfig(y_maxs)
 	minimo,indiceM = minConfig(y_mins)
-	
+	print("O grafico do individuo " + a + " plotado é:" + teste[indice])
+
 	yMax = maximo + maximo * 0.02
 	yMim = minimo - 0.02	# mudar o limite inferior (trocar o valor -0.02)
 	plt.ylim(yMim, yMax)
@@ -213,14 +222,14 @@ def plotIndividual(y_gene,y_maxs,y_mins,y_meds,y_best):
 	ylabel = 'Fitness'
 	xlabel = 'Number of generations'
 	titulo = nome(a)
-	title = titulo + " - Best, Average and Minimum"
+	title = titulo + " - Best Individual"
 
 
 	plt.ylabel(ylabel, fontweight="bold")
 	plt.xlabel(xlabel, fontweight="bold") 	
 	plt.title(title, fontweight="bold")
 
-	plt.legend(numpoints=1, loc="lower left", ncol=3)	# ,bbox_to_anchor=(-0.02, 1.15)
+	plt.legend(numpoints=1, loc="lower right", ncol=3)	# ,bbox_to_anchor=(-0.02, 1.15)
 
 	fig.savefig(namePlot+'.png', bbox_inches='tight')
 	plt.close(fig)
@@ -261,12 +270,14 @@ def plotIndMult(y_gene,y_maxs,y_mins,y_meds,y_best):
 	plt.xlabel(xlabel, fontweight="bold") 	
 	plt.title(title, fontweight="bold")
 
-	plt.legend(numpoints=1, loc="lower left", ncol=3)	# ,bbox_to_anchor=(-0.02, 1.15)
+	plt.legend(numpoints=1, loc="lower right", ncol=3)	# ,bbox_to_anchor=(-0.02, 1.15)
 
 	fig.savefig(namePlot+'.png', bbox_inches='tight')
 	plt.close(fig) 	
 
 	return True
+
+
 
 def nome(a):
 	if a == 'glass':
@@ -284,18 +295,19 @@ def nome(a):
 
 if __name__ == '__main__':
 
-	name            = ["glass","IBM","Kobe","mushrooms","airline_customer_satisfaction","bands","cellphone","flag"]
-	population      = ["10", "50"]
-	iteration_limit = ["100", "200"]
-	stop_criteria   = ["0","1"]
-	probs_type      = ["0"]
-	crossover_type  = ["2", "3"]
-	crossover_rate  = ["0.5","0.8"]
-	mutation_type   = ["0", "1"]
-	mutation_rate   = ["0.03", "0.15"]
-	use_threads     = ["False"]
-	cut_half_pop    = ["False"]
-	replicate_best  = ["0.0", "0.1"]
+	name = ["glass","IBM","Kobe","mushrooms","airline_customer_satisfaction","bands","cellphone","flag"]
+
+	conf = [["50","100","1","0","3","0.8","0","0.03","False","False","0.1"], \
+	["10","100","1","0","3","0.8","0","0.03","False","False","0.1"], \
+	["50","200","1","0","3","0.8","0","0.03","False","False","0.1"], \
+	["50","100","0","0","3","0.8","0","0.03","False","False","0.1"], \
+	["50","100","1","0","2","0.8","0","0.03","False","False","0.1"], \
+	["50","100","1","0","3","0.5","0","0.03","False","False","0.1"], \
+	["50","100","1","0","3","0.8","1","0.03","False","False","0.1"], \
+	["50","100","1","0","3","0.8","0","0.15","False","False","0.1"], \
+	["50","100","1","0","3","0.8","0","0.03","False","False","0.0"]]
+	
+	mesmoYLim = True ############ tipo de grafico
 
 	for a in name:
 
@@ -311,19 +323,35 @@ if __name__ == '__main__':
 		y_y_std = []
 		teste = []
 
-		for b, c, d, e, f, g, h, i, j, k, l in itertools.product(population, iteration_limit, \
-			stop_criteria, probs_type, crossover_type, crossover_rate, mutation_type, mutation_rate, \
-			use_threads, cut_half_pop, replicate_best):							
+		for cont in range(len(conf)):
+		
+			b = conf[cont][0]
+			c = conf[cont][1]
+			d = conf[cont][2]
+			e = conf[cont][3]
+			f = conf[cont][4]
+			g = conf[cont][5]
+			h = conf[cont][6]
+			i = conf[cont][7]
+			j = conf[cont][8]
+			k = conf[cont][9]
+			l = conf[cont][10]
+
+			if (a == "Kobe" or a == "mushrooms" or a == "airline_customer_satisfaction" or a == "IBM") and cont != 3:
+				d = "0"
+			elif (a == "Kobe" or a == "mushrooms" or a == "airline_customer_satisfaction" or a == "IBM") and cont == 3:
+				d = "1"
 
 			nameFile = name1+"_"+b+"_"+c+"_"+d+"_"+e+"_"+f+"_"+g+"_"+h+"_"+i+"_"+j+"_"+k+"_"+l		
 
 			test = b+"_"+c+"_"+d+"_"+e+"_"+f+"_"+g+"_"+h+"_"+i+"_"+j+"_"+k+"_"+l				
 
 			dados = openFile("../results/"+nameFile)
+
 			
 			if dados != 0:
-
-				print("File: ", nameFile)
+				
+				print("File: ", nameFile)					
 				teste.append(test)
 
 				gene = []
@@ -353,16 +381,24 @@ if __name__ == '__main__':
 				y_y_std.append(y_std)
 					
 		
-		colors = ['m','c','pink','r','b','g','y','orange','k','green']	
+		colors = ['m','c','pink','r','b','g','y','k','orange','green']	
 		formats = ['solid', 'solid','solid','solid','solid','solid','solid','solid','solid','solid']	
 		labels = ['C0','C1','C2','C3','C4','C5','C6','C7','C8','C9']
+
+		if mesmoYLim == True:
+			maximo,minimo = limites(y_best,y_meds)
+			maximo = maximo + maximo * 0.02
+			minimo = minimo + minimo * -0.02	# mudar o limite inferior (trocar o valor -0.02)
+		else:
+			maximo = 0
+			minimo = 0
 		
-		best1 = plotBest(y_gene,y_best)
+		best1 = plotBest(y_gene,y_best,maximo,minimo)
 
-		min1 = plotMin(y_gene,y_mins)
+		#min1 = plotMin(y_gene,y_mins,maximo,minimo)
 
-		max1 = plotMax(y_gene,y_maxs)
+		max1 = plotMax(y_gene,y_maxs,maximo,minimo)
 
-		average1 = plotAvg(y_gene,y_meds)
+		average1 = plotAvg(y_gene,y_meds,maximo,minimo)
 
-		indiv1 = plotIndividual(y_gene,y_maxs,y_mins,y_meds,y_best)	
+		indiv1 = plotIndividual(y_gene,y_maxs,y_mins,y_meds,y_best,teste)
