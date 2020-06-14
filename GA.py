@@ -185,7 +185,7 @@ class GeneticAlgorithm:
             probs[i] = self.population[i].score
         div = sum(probs)
 
-        if div!=0:
+        if div>0:
             for i in range(len(probs)):
                 probs[i] /= div
         else: # Se nenhuma solução consegue resolver nada, retorna chance igual para todos os elementos
