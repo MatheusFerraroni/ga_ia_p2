@@ -1,6 +1,6 @@
 #!/bin/bash
 
-for name in IBM bands flag glass #cellphone
+for name in cellphone airline_customer_satisfaction Kobe mushrooms #IBM bands flag glass #
 do
 
 sleep 2
