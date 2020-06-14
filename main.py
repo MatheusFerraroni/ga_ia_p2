@@ -36,7 +36,8 @@ def custom_mutate(index, genome):
 
 # Mutation seqSwap with generation
 def custom_mutate1(index, genome):
-    aux = []
+    #aux = []
+    aux = np.array([])
     for i in range(len(genome)):
         if i <= index:
             aux.append(genome[i])
