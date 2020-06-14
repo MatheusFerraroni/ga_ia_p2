@@ -1,10 +1,14 @@
 #!/bin/bash
 
-for name in glass #bands #flag  cellphone
+for name in IBM bands flag glass #cellphone
 do
 
-for config in 4 4 4 4 #0 1 2 3 4 5 6 7 8 
+sleep 2
+
+for config in 0 1 2 3 4 5 6 7 8 9
 do
+
+sleep 1
 
 population=50
 iteration_limit=100
@@ -54,10 +58,14 @@ elif [ $config = '8' ];
 then
     echo "Configuration 8"
     replicate_best=0 
+elif [ $config = '9' ];
+then
+    echo "Configuration 9"
+    mutation_rate=0.5
 fi
 
 
-   python main.py \
+   python3 main.py \
     --dataset="./data/${name}.csv" \
     --population="${population}" \
     --iteration_limit="${iteration_limit}" \
@@ -69,7 +77,7 @@ fi
     --mutation_rate="${mutation_rate}" \
     --use_threads="${use_threads}" \
     --cut_half_pop="${cut_half_pop}" \
-    --replicate_best="${replicate_best}" 
+    --replicate_best="${replicate_best}" &
 
 
 

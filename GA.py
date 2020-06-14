@@ -100,7 +100,7 @@ class GeneticAlgorithm:
     def run(self):
 
         while self.check_stop():
-            print("Generation = ", self.iteration_counter)
+            #print("Generation = ", self.iteration_counter)
             self.calculate_score() # PRIMEIRO: Definir score
             self.population.sort(key=lambda x: x.score, reverse=True) # SEGUNDO: Ordenar pelo score
 
@@ -108,7 +108,7 @@ class GeneticAlgorithm:
                 self.best_element_total = self.population[0]
 
             self.do_log()
-            print(self.historic)
+            # print(self.historic)
 
             if self.cut_half_population: # Desativado por padrão. Pode ser util para ajudar a melhoarar a evolução
                 self.population = self.population[0:len(self.population)//2] # Descarta pior metade da populacao. 
