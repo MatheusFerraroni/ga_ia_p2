@@ -4,6 +4,26 @@ import numpy as np
 import json
 import itertools
 
+import seaborn as sns; sns.set()
+import pandas as pd
+import os
+
+targets = {'mushrooms.csv': 'class',
+           'netflix_titles.csv': 'show_id',
+           'Bulldozer.csv': 'SalePrice',
+           'Porto_Seguro.csv': 'target',
+           'Kobe.csv': 'shot_made_flag',
+           'IBM.csv': 'Attrition',
+           'sky.csv': 'class',
+           'airline_customer_satisfaction.csv': 'satisfaction',
+           'weatherAUS.csv': 'RainTomorrow',
+           'activity_classification.csv':'Activity',
+           'bands.csv': 'band type',
+           'flag.csv': 'region',
+           'glass.csv': 'Type',
+           'cellphone.csv': 'price_range'
+           }
+
 
 name            = ["glass","IBM","Kobe","mushrooms","airline_customer_satisfaction","bands","cellphone","flag"]
 population      = ["10", "50"]      #b
@@ -14,7 +34,7 @@ crossover_type  = ["2", "3"]             #f
 crossover_rate  = ["0.5","0.8"]           #g
 mutation_type   = ["0", "1"]             #h
 mutation_rate   = ["0.03", "0.15"]           #i
-use_threads     = ["False"]         #j 
+use_threads     = ["False"]         #j
 cut_half_pop    = ["False"]         #k
 replicate_best  = ["0.0", "0.1"]           #l
 
@@ -37,30 +57,30 @@ def bestConfig(y_best):
 			if y_best[i][j] > maximo:
 				maximo = y_best[i][j]
 				indice = i
-	
+
 	return maximo,indice
 
 def plotBest(y_gene,y_best):
-	
+
 	fig = plt.figure(1)
-	
+
 	maximo,indice = bestConfig(y_best)
 
 	yMax = maximo + maximo * 0.02
-	yMim = maximo * -0.02	
-	plt.ylim(yMim, yMax)	
-	
+	yMim = maximo * -0.02
+	plt.ylim(yMim, yMax)
+
 	xMax = len(y_gene[0]) + len(y_gene[0])*0.02
 	xMim =  len(y_gene[0])*-0.02
 	plt.xlim(xMim, 100)
 
 	plt.xticks(rotation = "horizontal")
 
-	plt.grid(True, which="both", ls="-", linewidth=0.1, color='0.10', zorder=0)    												
-			
-	for n in range(len(y_best)):		
+	plt.grid(True, which="both", ls="-", linewidth=0.1, color='0.10', zorder=0)
+
+	for n in range(len(y_best)):
 		plt.errorbar(y_gene[n],y_best[n], ls=formats[n], label=labels[n],color=colors[n],yerr=y_y_std[n], zorder=3)
-		
+
 	namePlot = a + "_bestIndividuals"
 	ylabel = 'Fitness'
 	xlabel = 'Number of generations'
@@ -68,7 +88,7 @@ def plotBest(y_gene,y_best):
 	title = titulo + " - Best Individuals"
 
 	plt.ylabel(ylabel, fontweight="bold")
-	plt.xlabel(xlabel, fontweight="bold") 	
+	plt.xlabel(xlabel, fontweight="bold")
 	plt.title(title, fontweight="bold")
 
 	plt.legend(numpoints=1, loc="lower right", ncol=3)	# ,bbox_to_anchor=(-0.02, 1.15)
@@ -76,10 +96,10 @@ def plotBest(y_gene,y_best):
 	fig.savefig(namePlot+'.png', bbox_inches='tight')
 	plt.close(fig)
 
-	return True			
+	return True
 
 def plotMin(y_gene,y_mins):
-	
+
 	fig = plt.figure(2)
 
 	maximo,indice = bestConfig(y_mins)
@@ -92,11 +112,11 @@ def plotMin(y_gene,y_mins):
 	xMim =  len(y_gene[0])*-0.02
 	plt.xlim(xMim, 100)
 
-	
+
 	plt.grid(True, which="both", ls="-", linewidth=0.1, color='0.10', zorder=0)
 	for n in range(len(y_mins)):
 		plt.errorbar(y_gene[n],y_mins[n], ls=formats[n], label=labels[n],color=colors[n],yerr=y_y_std[n], zorder=3)
-		
+
 	namePlot = a + "_mins"
 	ylabel = 'Fitness'
 	xlabel = 'Number of generations'
@@ -105,14 +125,14 @@ def plotMin(y_gene,y_mins):
 
 
 	plt.ylabel(ylabel, fontweight="bold")
-	plt.xlabel(xlabel, fontweight="bold") 	
+	plt.xlabel(xlabel, fontweight="bold")
 	plt.title(title, fontweight="bold")
 
 	plt.legend(numpoints=1, loc="lower left", ncol=3)	# ,bbox_to_anchor=(-0.02, 1.15)
 
 	fig.savefig(namePlot+'.png', bbox_inches='tight')
-	plt.close(fig) 			
-	
+	plt.close(fig)
+
 	return True
 
 def plotMax(y_gene,y_maxs):
@@ -128,11 +148,11 @@ def plotMax(y_gene,y_maxs):
 	xMax = len(y_gene[0]) + len(y_gene[0])*0.02
 	xMim =  len(y_gene[0])*-0.02
 	plt.xlim(xMim, 100)
-	
+
 	plt.grid(True, which="both", ls="-", linewidth=0.1, color='0.10', zorder=0)
 	for n in range(len(y_maxs)):
 		plt.errorbar(y_gene[n],y_maxs[n], ls=formats[n], label=labels[n],color=colors[n],yerr=y_y_std[n], zorder=3)
-		
+
 	namePlot = a + "_max"
 	ylabel = 'Fitness'
 	xlabel = 'Number of generations'
@@ -141,15 +161,15 @@ def plotMax(y_gene,y_maxs):
 
 
 	plt.ylabel(ylabel, fontweight="bold")
-	plt.xlabel(xlabel, fontweight="bold") 	
+	plt.xlabel(xlabel, fontweight="bold")
 	plt.title(title, fontweight="bold")
 
 	plt.legend(numpoints=1, loc="lower left", ncol=3)	# ,bbox_to_anchor=(-0.02, 1.15)
 
 	fig.savefig(namePlot+'.png', bbox_inches='tight')
-	plt.close(fig) 
+	plt.close(fig)
 
-	return True	
+	return True
 
 def plotAvg(y_gene,y_meds):
 
@@ -164,11 +184,11 @@ def plotAvg(y_gene,y_meds):
 	xMax = len(y_gene[0]) + len(y_gene[0])*0.02
 	xMim =  len(y_gene[0])*-0.02
 	plt.xlim(xMim, 100)
-	
+
 	plt.grid(True, which="both", ls="-", linewidth=0.1, color='0.10', zorder=0)
 	for n in range(len(y_meds)):
 		plt.errorbar(y_gene[n],y_meds[n], ls=formats[n], label=labels[n],color=colors[n],yerr=y_y_std[n], zorder=3)
-		
+
 	namePlot = a + "_avg"
 	ylabel = 'Fitness'
 	xlabel = 'Number of generations'
@@ -177,7 +197,7 @@ def plotAvg(y_gene,y_meds):
 
 
 	plt.ylabel(ylabel, fontweight="bold")
-	plt.xlabel(xlabel, fontweight="bold") 	
+	plt.xlabel(xlabel, fontweight="bold")
 	plt.title(title, fontweight="bold")
 
 	plt.legend(numpoints=1, loc="lower right", ncol=3)	# ,bbox_to_anchor=(-0.02, 1.15)
@@ -202,12 +222,12 @@ def plotIndividual(y_gene,y_maxs,y_mins,y_meds,y_best):
 	xMax = len(y_gene[indice]) + len(y_gene[indice])*0.02
 	xMim =  len(y_gene[indice])*-0.02
 	plt.xlim(xMim, xMax)
-		
+
 	plt.grid(True, which="both", ls="-", linewidth=0.1,color='0.10', zorder=0)
-	plt.errorbar(y_gene[indice],y_maxs[indice], ls=formats[indice], label='maximum', color='blue',yerr=y_y_std[indice], zorder=3)	
-	plt.errorbar(y_gene[indice],y_meds[indice], ls=formats[indice], label='average', color='green',yerr=y_y_std[indice], zorder=3)	
+	plt.errorbar(y_gene[indice],y_maxs[indice], ls=formats[indice], label='maximum', color='blue',yerr=y_y_std[indice], zorder=3)
+	plt.errorbar(y_gene[indice],y_meds[indice], ls=formats[indice], label='average', color='green',yerr=y_y_std[indice], zorder=3)
 	plt.errorbar(y_gene[indice],y_mins[indice], ls=formats[indice], label='minimum', color='pink',yerr=y_y_std[indice], zorder=3)
-		
+
 	namePlot = a + "_best_b_a_m"
 	ylabel = 'Fitness'
 	xlabel = 'Number of generations'
@@ -216,7 +236,7 @@ def plotIndividual(y_gene,y_maxs,y_mins,y_meds,y_best):
 
 
 	plt.ylabel(ylabel, fontweight="bold")
-	plt.xlabel(xlabel, fontweight="bold") 	
+	plt.xlabel(xlabel, fontweight="bold")
 	plt.title(title, fontweight="bold")
 
 	plt.legend(numpoints=1, loc="lower left", ncol=3)	# ,bbox_to_anchor=(-0.02, 1.15)
@@ -242,12 +262,12 @@ def plotIndMult(y_gene,y_maxs,y_mins,y_meds,y_best):
 
 	plt.grid(True, which="both", ls="-", linewidth=0.1, color='0.10', zorder=0)
 	for n in range(len(y_maxs)):
-		plt.errorbar(y_gene[n],y_best[n], ls=formats[n],color='pink',yerr=y_y_std[n], zorder=3)	
+		plt.errorbar(y_gene[n],y_best[n], ls=formats[n],color='pink',yerr=y_y_std[n], zorder=3)
 	for n in range(len(y_maxs)):
 		plt.errorbar(y_gene[n],y_meds[n], ls=formats[n],color='green',yerr=y_y_std[n], zorder=3)
 	for n in range(len(y_maxs)):
 		plt.errorbar(y_gene[n],y_mins[n], ls=formats[n],color='blue',yerr=y_y_std[n], zorder=3)
-		
+
 	namePlot = a + "_best_avg_min"
 	ylabel = 'Fitness'
 	xlabel = 'Number of generations'
@@ -256,13 +276,13 @@ def plotIndMult(y_gene,y_maxs,y_mins,y_meds,y_best):
 
 
 	plt.ylabel(ylabel, fontweight="bold")
-	plt.xlabel(xlabel, fontweight="bold") 	
+	plt.xlabel(xlabel, fontweight="bold")
 	plt.title(title, fontweight="bold")
 
 	plt.legend(numpoints=1, loc="lower left", ncol=3)	# ,bbox_to_anchor=(-0.02, 1.15)
 
 	fig.savefig(namePlot+'.png', bbox_inches='tight')
-	plt.close(fig) 	
+	plt.close(fig)
 
 	return True
 
@@ -280,6 +300,47 @@ def nome(a):
 	else:
 		return a
 
+def returnLabelsForCSVFile(csvFilePath, targetName):
+    featureLabels = []
+    file = pd.read_csv(csvFilePath)
+    featureLabels = list(file.head(0))
+    featureLabels.remove(targetName)
+    return featureLabels
+
+def returnBaseNameOfFileFullPath(resultDatasetPath):
+    name = resultDatasetPath.split('/')
+    baseName = name[len(name)-1]
+    name = baseName.split('.')
+    return name[0]
+
+def plotBestGenome(resultDatasetPath, figSizeArray = [10, 8], plotSavedInFolder = "genomeSequencePlots/"):
+
+    dataset = openFile("results2/"+resultDatasetPath)
+    bestGenomePerGenerationArray = []
+    baseName = returnBaseNameOfFileFullPath(resultDatasetPath)
+    datasetPath = "data/" + baseName
+    targetName = targets[baseName+".csv"]
+    featureLabels = returnLabelsForCSVFile(datasetPath+".csv", targetName)
+
+    if len(featureLabels) == 0:
+        print("Error in getting feature labels")
+        return
+
+    for historicElem in dataset['historic']:
+        bestGenomePerGenerationArray.append(historicElem['best_genome'])
+
+    plt.subplots(figsize=figSizeArray)
+    ax = sns.heatmap(bestGenomePerGenerationArray, vmin=0, vmax=1, linewidths=.2, xticklabels=featureLabels , cbar=False, cmap="tab20")
+    ax.invert_yaxis()
+    imageFullPath = plotSavedInFolder+resultDatasetPath+'.png'
+    plt.savefig(imageFullPath, bbox_inches='tight')
+    fig = plt.gcf()
+    plt.close(fig)
+
+
+#EXECUTION FILE PART
+
+
 for a in name:
 
 	name1 = a + ".csv"
@@ -296,14 +357,14 @@ for a in name:
 
 	for b, c, d, e, f, g, h, i, j, k, l in itertools.product(population, iteration_limit, \
 		stop_criteria, probs_type, crossover_type, crossover_rate, mutation_type, mutation_rate, \
-		use_threads, cut_half_pop, replicate_best):							
+		use_threads, cut_half_pop, replicate_best):
 
-		nameFile = name1+"_"+b+"_"+c+"_"+d+"_"+e+"_"+f+"_"+g+"_"+h+"_"+i+"_"+j+"_"+k+"_"+l		
+		nameFile = name1+"_"+b+"_"+c+"_"+d+"_"+e+"_"+f+"_"+g+"_"+h+"_"+i+"_"+j+"_"+k+"_"+l
 
-		test = b+"_"+c+"_"+d+"_"+e+"_"+f+"_"+g+"_"+h+"_"+i+"_"+j+"_"+k+"_"+l				
+		test = b+"_"+c+"_"+d+"_"+e+"_"+f+"_"+g+"_"+h+"_"+i+"_"+j+"_"+k+"_"+l
 
 		dados = openFile("../results/"+nameFile)
-		
+
 		if dados != 0:
 
 			print("File: ", nameFile)
@@ -317,29 +378,29 @@ for a in name:
 			y_std = []
 
 			part = dados.get("historic")
-			
+
 			for i in range(len(part)):
 			    gene.append(int(part[i]["geracao"]))
 			    maxs.append(float(part[i]["max"]))
 			    if float(part[i]["max"]) > maximo:
-			    	maximo = float(part[i]["max"])			    	
+			    	maximo = float(part[i]["max"])
 			    mins.append(float(part[i]["min"]))
 			    meds.append(float(part[i]["avg"]))
 			    best.append(float(part[i]["best"]))
-			    y_std.append(0)					
-						
+			    y_std.append(0)
+
 			y_gene.append(gene)
 			y_maxs.append(maxs)
 			y_mins.append(mins)
 			y_meds.append(meds)
 			y_best.append(best)
 			y_y_std.append(y_std)
-				
-	
-	colors = ['m','c','pink','r','b','g','y','orange','k','green']	
-	formats = ['solid', 'solid','solid','solid','solid','solid','solid','solid','solid','solid']	
+
+
+	colors = ['m','c','pink','r','b','g','y','orange','k','green']
+	formats = ['solid', 'solid','solid','solid','solid','solid','solid','solid','solid','solid']
 	labels = ['C0','C1','C2','C3','C4','C5','C6','C7','C8','C9']
-	
+
 	best1 = plotBest(y_gene,y_best)
 
 	min1 = plotMin(y_gene,y_mins)
@@ -348,4 +409,10 @@ for a in name:
 
 	average1 = plotAvg(y_gene,y_meds)
 
-	indiv1 = plotIndividual(y_gene,y_maxs,y_mins,y_meds,y_best)	
+	indiv1 = plotIndividual(y_gene,y_maxs,y_mins,y_meds,y_best)
+
+
+
+#Plot best gene sequences
+for filename in os.listdir("results2/"):
+    plotBestGenome(filename)
