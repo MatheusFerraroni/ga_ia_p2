@@ -62,7 +62,7 @@ def plotBestGenome(resultDatasetPath, figSizeArray = [10, 8], plotSavedInFolder 
         bestGenomePerGenerationArray.append(historicElem['best_genome'])
 
     plt.subplots(figsize=figSizeArray)
-    ax = sns.heatmap(bestGenomePerGenerationArray, vmin=0, vmax=1, linewidths=.2, xticklabels=featureLabels , cbar=False)
+    ax = sns.heatmap(bestGenomePerGenerationArray, vmin=0, vmax=1, linewidths=.2, xticklabels=featureLabels , cbar=False, cmap="gray")
     ax.invert_yaxis()
     imageFullPath = plotSavedInFolder+resultDatasetPath+'.png'
     plt.savefig(imageFullPath, bbox_inches='tight')
