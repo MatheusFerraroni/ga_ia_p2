@@ -70,6 +70,6 @@ def plotBestGenome(resultDatasetPath, figSizeArray = [10, 8], plotSavedInFolder 
     plt.close(fig)
 
 
-for filename in os.listdir("results2/"):
-    plotBestGenome(filename)
-print("done")
+#Uncomment to execute file
+#for filename in os.listdir("results2/"):
+#    plotBestGenome(filename)
