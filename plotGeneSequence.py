@@ -45,7 +45,7 @@ def returnBaseNameOfFileFullPath(resultDatasetPath):
     name = baseName.split('.')
     return name[0]
 
-def plotBestGenome(resultDatasetPath, figSizeArray = [10, 8], plotSavedInFolder = "bestGenomeSequencePlots/"):
+def plotBestGenome(resultDatasetPath, figSizeArray = [10, 8], plotSavedInFolder = "genomeSequencePlots/"):
 
     dataset = openFile("results2/"+resultDatasetPath)
     bestGenomePerGenerationArray = []
@@ -62,7 +62,7 @@ def plotBestGenome(resultDatasetPath, figSizeArray = [10, 8], plotSavedInFolder 
         bestGenomePerGenerationArray.append(historicElem['best_genome'])
 
     plt.subplots(figsize=figSizeArray)
-    ax = sns.heatmap(bestGenomePerGenerationArray, vmin=0, vmax=1, linewidths=.2, xticklabels=featureLabels , cbar=False, cmap="gray")
+    ax = sns.heatmap(bestGenomePerGenerationArray, vmin=0, vmax=1, linewidths=.2, xticklabels=featureLabels , cbar=False, cmap="tab20")
     ax.invert_yaxis()
     imageFullPath = plotSavedInFolder+resultDatasetPath+'.png'
     plt.savefig(imageFullPath, bbox_inches='tight')
@@ -71,5 +71,5 @@ def plotBestGenome(resultDatasetPath, figSizeArray = [10, 8], plotSavedInFolder 
 
 
 #Uncomment to execute file
-#for filename in os.listdir("results2/"):
-#    plotBestGenome(filename)
+for filename in os.listdir("results2/"):
+    plotBestGenome(filename)
