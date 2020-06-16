@@ -81,7 +81,7 @@ def plotBest(y_gene,y_best,maximo,minimo):
 
 	plt.legend(numpoints=1, loc="lower right", ncol=3)	# ,bbox_to_anchor=(-0.02, 1.15)
 
-	fig.savefig('Metrics/'+namePlot+'.png', bbox_inches='tight')
+	fig.savefig('Metrics2/'+namePlot+'.png', bbox_inches='tight')
 	plt.close(fig)
 
 	return True			
@@ -116,7 +116,7 @@ def plotMin(y_gene,y_mins,maximo,minimo):
 
 	plt.legend(numpoints=1, loc="lower right", ncol=3)	# ,bbox_to_anchor=(-0.02, 1.15)
 
-	fig.savefig('Metrics/'+namePlot+'.png', bbox_inches='tight')
+	fig.savefig('Metrics2/'+namePlot+'.png', bbox_inches='tight')
 	plt.close(fig) 			
 	
 	return True
@@ -157,7 +157,7 @@ def plotMax(y_gene,y_maxs,maximo,minimo,teste):
 
 	plt.legend(numpoints=1, loc="lower right", ncol=3)	# ,bbox_to_anchor=(-0.02, 1.15)
 
-	fig.savefig('Metrics/'+namePlot+'.png', bbox_inches='tight')
+	fig.savefig('Metrics2/'+namePlot+'.png', bbox_inches='tight')
 	plt.close(fig) 
 
 	return True	
@@ -200,7 +200,7 @@ def plotAvg(y_gene,y_meds,maximo,minimo):
 
 	plt.legend(numpoints=1, loc="lower right", ncol=3)	# ,bbox_to_anchor=(-0.02, 1.15)
 
-	fig.savefig('Metrics/'+namePlot+'.png', bbox_inches='tight')
+	fig.savefig('Metrics2/'+namePlot+'.png', bbox_inches='tight')
 	plt.close(fig)
 
 	return True
@@ -213,12 +213,9 @@ def plotIndividual(y_gene,y_maxs,y_mins,y_meds,y_best,teste):
 	maximo,indice = bestConfig(y_maxs)
 	minimo,indiceMinimo = minConfig(y_mins)		
 	print("O grafico do individuo " + a + " plotado é:" + teste[indice])
-	print(indice)
-	if a == "airline_customer_satisfaction":
-		configurationName = configurationAirline(indice)				
-	else:
-		configurationName = configuration(indice)
-	print(configurationName)
+	#print(indice)
+	configurationName = configuration(indice)
+	#print(configurationName)
 
 	yMax = maximo + maximo * 0.02
 	yMim = minimo - 0.02	# mudar o limite inferior (trocar o valor -0.02)
@@ -231,7 +228,7 @@ def plotIndividual(y_gene,y_maxs,y_mins,y_meds,y_best,teste):
 
 	mini = min(y_mins[indice])
 	maxi = max(y_maxs[indice])
-	print("mini:",mini,"max",maxi)
+	#print("mini:",mini,"max",maxi)
 		
 	plt.grid(True, which="both", ls="-", linewidth=0.1,color='0.10', zorder=0)
 	plt.errorbar(y_gene[indice],y_maxs[indice], ls=formats[indice], label='maximum', color='blue',yerr=y_y_std[indice], zorder=3)	
@@ -251,7 +248,7 @@ def plotIndividual(y_gene,y_maxs,y_mins,y_meds,y_best,teste):
 
 	plt.legend(numpoints=1, loc="lower right", ncol=3)	# ,bbox_to_anchor=(-0.02, 1.15)
 
-	fig.savefig('Metrics/'+namePlot+'.png', bbox_inches='tight')
+	fig.savefig('Metrics2/'+namePlot+'.png', bbox_inches='tight')
 	plt.close(fig)
 
 	return True
@@ -277,24 +274,6 @@ def configuration(indice):
 	elif indice == 8:
 		return "C8"
 
-def configurationAirline(indice):
-
-	if indice == 0:
-		return "C0"
-	elif indice == 1:
-		return "C1"
-	elif indice == 2:
-		return "C3"
-	elif indice == 3:
-		return "C4"
-	elif indice == 4:
-		return "C5"
-	elif indice == 5:
-		return "C6"
-	elif indice == 6:
-		return "C7"
-	elif indice == 7:
-		return "C8"
 
 def plotIndMult(y_gene,y_maxs,y_mins,y_meds,y_best):
 
@@ -332,7 +311,7 @@ def plotIndMult(y_gene,y_maxs,y_mins,y_meds,y_best):
 
 	plt.legend(numpoints=1, loc="lower right", ncol=3)	# ,bbox_to_anchor=(-0.02, 1.15)
 
-	fig.savefig('Metrics/'+namePlot+'.png', bbox_inches='tight')
+	fig.savefig('Metrics2/'+namePlot+'.png', bbox_inches='tight')
 	plt.close(fig) 	
 
 	return True
@@ -396,11 +375,7 @@ if __name__ == '__main__':
 			j = conf[cont][8]
 			k = conf[cont][9]
 			l = conf[cont][10]
-
-			if (a == "Kobe" or a == "mushrooms" or a == "airline_customer_satisfaction" or a == "IBM") and cont != 3:
-				d = "0"
-			elif (a == "Kobe" or a == "mushrooms" or a == "airline_customer_satisfaction" or a == "IBM") and cont == 3:
-				d = "1"
+			
 
 			nameFile = name1+"_"+b+"_"+c+"_"+d+"_"+e+"_"+f+"_"+g+"_"+h+"_"+i+"_"+j+"_"+k+"_"+l		
 
@@ -411,7 +386,8 @@ if __name__ == '__main__':
 			
 			if dados != 0:
 				
-				print("File: ", nameFile)					
+				print("File: ", nameFile)
+
 				teste.append(test)
 
 				gene = []
