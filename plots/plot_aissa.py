@@ -8,20 +8,20 @@ import seaborn as sns; sns.set()
 import pandas as pd
 import os
 
-targets = {'mushrooms.csv': 'class',
-           'netflix_titles.csv': 'show_id',
-           'Bulldozer.csv': 'SalePrice',
-           'Porto_Seguro.csv': 'target',
-           'Kobe.csv': 'shot_made_flag',
-           'IBM.csv': 'Attrition',
-           'sky.csv': 'class',
-           'airline_customer_satisfaction.csv': 'satisfaction',
-           'weatherAUS.csv': 'RainTomorrow',
-           'activity_classification.csv':'Activity',
-           'bands.csv': 'band type',
-           'flag.csv': 'region',
-           'glass.csv': 'Type',
-           'cellphone.csv': 'price_range'
+targets = {'mushrooms.csv': ['class'],
+           'netflix_titles.csv': ['show_id'],
+           'Bulldozer.csv': ['SalePrice'],
+           'Porto_Seguro.csv': ['target'],
+           'Kobe.csv': ['shot_made_flag'],
+           'IBM.csv': ['Attrition'],
+           'sky.csv': ['class'],
+           'airline_customer_satisfaction.csv': ['satisfaction',"Unnamed: 0","id","Arrival Delay in Minutes"],
+           'weatherAUS.csv': ['RainTomorrow'],
+           'activity_classification.csv':['Activity'],
+           'bands.csv': ['band type'],
+           'flag.csv': ['region'],
+           'glass.csv': ['Type'],
+           'cellphone.csv': ['price_range']
            }
 
 
@@ -49,7 +49,7 @@ def openFile(nameFile):
 
 	return dados
 
-
+"""
 def bestConfig(y_best):
 	maximo = 0
 	for i in range(len(y_best)):
@@ -300,11 +300,14 @@ def nome(a):
 	else:
 		return a
 
+"""
+
 def returnLabelsForCSVFile(csvFilePath, targetName):
     featureLabels = []
     file = pd.read_csv(csvFilePath)
     featureLabels = list(file.head(0))
-    featureLabels.remove(targetName)
+    for columntoRemove in targetName:
+        featureLabels.remove(columntoRemove)
     return featureLabels
 
 def returnBaseNameOfFileFullPath(resultDatasetPath):
@@ -313,7 +316,7 @@ def returnBaseNameOfFileFullPath(resultDatasetPath):
     name = baseName.split('.')
     return name[0]
 
-def plotBestGenome(resultDatasetPath, figSizeArray = [10, 8], plotSavedInFolder = "genomeSequencePlots/"):
+def plotBestGenome(resultDatasetPath, figSizeArray = [10, 8], plotSavedInFolder = "bestGenomesPlots/"):
 
     dataset = openFile("results2/"+resultDatasetPath)
     bestGenomePerGenerationArray = []
@@ -339,7 +342,7 @@ def plotBestGenome(resultDatasetPath, figSizeArray = [10, 8], plotSavedInFolder 
 
 
 #EXECUTION FILE PART
-
+"""
 
 for a in name:
 
@@ -411,7 +414,7 @@ for a in name:
 
 	indiv1 = plotIndividual(y_gene,y_maxs,y_mins,y_meds,y_best)
 
-
+"""
 
 #Plot best gene sequences
 for filename in os.listdir("results2/"):
