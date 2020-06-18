@@ -40,7 +40,7 @@ replicate_best  = ["0.0", "0.1"]           #l
 
 def openFile(nameFile):
 	try:
-		f = open(nameFile + ".json", "r")
+		f = open(nameFile, "r")
 		dados = json.loads(f.read())
 		f.close()
 	except:
@@ -316,7 +316,7 @@ def returnBaseNameOfFileFullPath(resultDatasetPath):
     name = baseName.split('.')
     return name[0]
 
-def plotBestGenome(resultDatasetPath, figSizeArray = [10, 8], plotSavedInFolder = "bestGenomesPlots/"):
+def plotBestGenome(resultDatasetPath, figSizeArray = [10, 8], plotSavedInFolder = "bestgenomePlots/"):
 
     dataset = openFile("results2/"+resultDatasetPath)
     bestGenomePerGenerationArray = []
@@ -327,6 +327,9 @@ def plotBestGenome(resultDatasetPath, figSizeArray = [10, 8], plotSavedInFolder 
 
     if len(featureLabels) == 0:
         print("Error in getting feature labels")
+        return
+
+    if 'best_genome' not in dataset["historic"][0].keys():
         return
 
     for historicElem in dataset['historic']:
@@ -418,4 +421,5 @@ for a in name:
 
 #Plot best gene sequences
 for filename in os.listdir("results2/"):
+    print("filename:", filename)
     plotBestGenome(filename)
